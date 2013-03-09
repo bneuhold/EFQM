@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFQMWeb", "EFQMWeb\EFQMWeb.csproj", "{400380BB-5465-4A09-AC49-CB58F31A16FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFQMWeb.Tests", "EFQMWeb.Tests\EFQMWeb.Tests.csproj", "{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{400380BB-5465-4A09-AC49-CB58F31A16FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400380BB-5465-4A09-AC49-CB58F31A16FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400380BB-5465-4A09-AC49-CB58F31A16FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400380BB-5465-4A09-AC49-CB58F31A16FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
