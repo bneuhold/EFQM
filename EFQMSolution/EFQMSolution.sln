@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFQMWeb", "EFQMWeb\EFQMWeb.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFQMWeb.Tests", "EFQMWeb.Tests\EFQMWeb.Tests.csproj", "{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.DataAccess", "Library.DataAccess\Library.DataAccess.csproj", "{B882F7DF-3A29-4961-BFFB-704A31395CDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGeneration\CodeGeneration.csproj", "{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AB78053-EDF4-4FEB-BB5E-C65124E4B8A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B882F7DF-3A29-4961-BFFB-704A31395CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B882F7DF-3A29-4961-BFFB-704A31395CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B882F7DF-3A29-4961-BFFB-704A31395CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B882F7DF-3A29-4961-BFFB-704A31395CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

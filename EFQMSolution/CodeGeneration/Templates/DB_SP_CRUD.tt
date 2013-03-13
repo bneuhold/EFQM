@@ -1,0 +1,186 @@
+﻿<#@ template   debug="true" hostSpecific="true" #>
+<#@ output extension="sql" #>
+<#@ assembly name="Microsoft.SqlServer.ConnectionInfo"#>
+<#@ assembly name="Microsoft.SqlServer.Smo" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Smo" #>
+
+-- Next line is only needed on SQL 2008
+<#@ assembly name="Microsoft.SqlServer.Management.Sdk.Sfc" #>
+
+
+<#
+	string serverName = @".\SQLExpress";
+    string databaseName = @"dbHuogCMS";
+    Server server = new Server(serverName);       
+    Database database = new Database(server, databaseName);
+    database.Refresh();	
+	foreach(Table table in database.Tables)
+	{	
+		if(table.Name.Contains("Huog")){
+
+#>		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'<#=  table.Name #>_insert') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  <#=  table.Name  #>_insert
+		GO
+		
+		CREATE procedure <#=  table.Name  #>_insert
+<# 
+		string primaryKeyName = "";
+		int count = 0;
+		this.PushIndent("\t\t\t");
+		foreach(Column column in table.Columns)
+		{
+			if(column.InPrimaryKey){
+				primaryKeyName = column.Name;
+				this.WriteLine("@" + column.Name + " " + column.DataType + " output");
+            }else{
+				string length="";
+				if(column.DataType.SqlDataType == SqlDataType.NVarChar || column.DataType.SqlDataType == SqlDataType.VarChar){
+					length = "("+column.DataType.MaximumLength+")";
+				}else if(column.DataType.SqlDataType == SqlDataType.NVarCharMax || column.DataType.SqlDataType == SqlDataType.VarCharMax){
+					length = "(max)";
+				}else if (column.DataType.SqlDataType == SqlDataType.Decimal){
+					length = "("+column.DataType.NumericPrecision+","+column.DataType.NumericScale+")";
+				}
+				if (count>0) this.Write(", ");
+				this.WriteLine("@" + column.Name + " " + column.DataType + length + (column.Nullable? " = NULL" : ""));
+            }
+			count ++;
+		}
+		this.PopIndent();
+		this.WriteLine("    ");
+#>
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		INSERT INTO <#= table.Name #> ( 
+		<# 
+			this.PushIndent("\t\t\t");
+			count = 0;
+			foreach (Column column in table.Columns)
+			{
+				if (!column.InPrimaryKey){
+					if	(count>0) this.Write(", ");
+					this.Write("["+column.Name+"]");
+					count ++;
+				}
+			}
+			this.PopIndent();
+			//this.WriteLine("");
+		#>) VALUES (<#  
+			this.PushIndent("\t\t\t");
+			count = 0;
+			foreach(Column column in table.Columns)
+			{
+				if (!column.InPrimaryKey){
+					if	(count>0) 
+						this.Write(", ");
+					this.Write("@" + column.Name);
+					count ++;
+				}
+			}
+			this.PopIndent();#>) 
+
+		SELECT @<#=primaryKeyName #> = SCOPE_IDENTITY(), @ERROR = @@ERROR
+
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+<# 
+	this.WriteLine("        GO");
+		this.PopIndent();
+		WriteLine("");
+		WriteLine("");
+#>
+
+
+	
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'<#=  table.Name #>_update') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  <#=  table.Name  #>_update
+		GO
+		
+		CREATE procedure <#=  table.Name  #>_update
+<# 
+		count = 0;
+		this.PushIndent("\t\t\t");
+		foreach(Column column in table.Columns)
+		{
+			string length="";
+			if(column.DataType.SqlDataType == SqlDataType.NVarChar || column.DataType.SqlDataType == SqlDataType.VarChar){
+				length = "("+column.DataType.MaximumLength+")";
+            }else if(column.DataType.SqlDataType == SqlDataType.NVarCharMax || column.DataType.SqlDataType == SqlDataType.VarCharMax){
+				length = "(max)";
+            }else if (column.DataType.SqlDataType == SqlDataType.Decimal){
+				length = "("+column.DataType.NumericPrecision+","+column.DataType.NumericScale+")";
+            }
+			if (count>0) this.Write(", ");
+			this.WriteLine("@" + column.Name + " " + column.DataType + length + (column.Nullable? " = NULL" : ""));
+			count ++;
+		}
+		this.PopIndent();
+		this.WriteLine("    ");
+		#>
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		UPDATE <#= table.Name #> SET 
+		<# 
+			this.PushIndent("\t\t\t");
+			count = 0;
+			foreach (Column column in table.Columns)
+			{
+				if (!column.InPrimaryKey){
+					if	(count>0) this.Write(", ");
+					this.WriteLine(column.Name + " = @" + column.Name);
+					count ++;
+				}
+			}
+			this.PopIndent();
+			//this.WriteLine("");
+		#>WHERE
+		<#  
+			this.PushIndent("\t\t\t");
+			count = 0;
+			foreach(Column column in table.Columns)
+			{
+				if (column.InPrimaryKey){
+					if	(count>0) 
+						this.Write(" AND ");
+					this.WriteLine(column.Name + " = @" + column.Name);
+					count ++;
+				}
+			}
+			this.PopIndent();
+		#> 
+
+		SET @ERROR = @@ERROR
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+<# 
+	this.WriteLine("        GO");
+		this.PopIndent();
+		WriteLine("");
+		WriteLine("");
+		WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+		WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+	}
+		
+    }
+#>
