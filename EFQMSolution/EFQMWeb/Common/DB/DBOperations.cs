@@ -5,6 +5,7 @@ using System.Web;
 using Library.DataAccess;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using EFQMWeb.Common.Entity;
+using System.Data;
 
 namespace EFQMWeb.Common.DB
 {
@@ -30,9 +31,21 @@ namespace EFQMWeb.Common.DB
             this._dbView = db;
         }
 
-        public int Register()
-        {
 
+        public DataTable HuogGrupaList()
+        {
+            using (IDbCommand command = GetCommand("tblHuogGrupa_List"))
+            {
+                return ExecuteDataTable(command);
+            }
+        }
+
+        public DataTable HuogPitanjeList()
+        {
+            using (IDbCommand command = GetCommand("tblHuogPitanje_List"))
+            {
+                return ExecuteDataTable(command);
+            }
         }
 
         public LoggedUser Login(string username, string password)

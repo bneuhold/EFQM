@@ -1,0 +1,134 @@
+﻿@model EFQMWeb.Models.HuogUpitnikModel
+@using System.Data
+
+@{
+    ViewBag.Title = "Upitnik";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $(".save.button").click(function (e) {
+            var result = { Vrijednosti: [] };
+            if ($("#UpitnikId").val() != "") {
+                result.UpitnikId = $("#UpitnikId").val();
+            }
+            $(".input-value .input-data").each(function () {
+                var val = 0;
+                if ($(this).val() != "") {
+                    val = $(this).val();
+                }
+                result.Vrijednosti.push({ P: $(this).attr("pitanjeId"), O: $(this).attr("oznaka"), A: $(this).attr("atribut"), V: val })
+            });
+        });
+
+    });
+</script>
+
+}
+
+<h2>Upitnik</h2>
+
+<h3>Grupe</h3>
+<ul>
+    @foreach (DataRow row in Model.Grupe.Rows)
+    {
+        <li>@row["Naziv"]</li>
+    }
+</ul>
+
+<h3>Pitanje</h3>
+<table class="upitnik table-editor extended">
+    <tr class="header big">
+        <td></td>
+        <td class="left">Podkriterij</td>
+        <td></td>
+        <td class="split cell"></td>
+        <td colspan="2" class="">Pristup</td>
+        <td class="split cell"></td>
+        <td colspan="2" class="">Uvođenje</td>
+        <td class="split cell"></td>
+        <td colspan="3" class="">Ocjenjivanje i pregled</td>
+    </tr>
+    <tr class="header small">
+        <td colspan="4"></td>
+        <td>Pouzdan</td>
+        <td>Integriran</td>
+        <td></td>
+        <td>Implementirano</td>
+        <td>Sustavno</td>
+        <td></td>
+        <td>Mjerenje</td>
+        <td>Učenje</td>
+        <td>Napredak</td>
+        <td></td>
+    </tr>
+    @foreach (DataRow row in Model.Pitanja.Rows)
+    {
+        if ((int)row["GrupaId"] < 6)
+        {
+            <tr id="@("row_"+row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
+                <td class="oznaka left grouped">@row["Oznaka"]</td>
+                <td class="naziv left grouped">@row["Naziv"]</td>
+                <td class="prosjek average grouped"></td>
+                <td class="split cell"></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"]+"-2")" class="input-data" /></td>
+                <td class="split cell"></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"]+"-3")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"]+"-4")" class="input-data" /></td>
+                <td class="split cell"></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"]+"-5")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="6" id="@(row["Oznaka"]+"-6")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="7" id="@(row["Oznaka"]+"-7")" class="input-data" /></td>
+            </tr>
+        }
+    }
+</table>
+
+<div></div>
+
+<table class="upitnik table-editor shorter">
+    <tr class="header big">
+        <td></td>
+        <td class="left">Podkriterij</td>
+        <td></td>
+        <td class="split cell"></td>
+        <td colspan="4" class="">Rezultati</td>
+        <td class="split cell"></td>
+        <td class="">Elementi</td>
+    </tr>
+    <tr class="header small">
+        <td colspan="4"></td>
+        <td>Trendovi</td>
+        <td>Ciljevi</td>
+        <td>Usporedbe</td>
+        <td>Uzroci</td>
+        <td></td>
+        <td>Sadržaj</td>
+    </tr>
+
+    @foreach (DataRow row in Model.Pitanja.Rows)
+    {
+        if ((int)row["GrupaId"] >= 6)
+        {
+            <tr id="@("row_"+row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
+                <td class="oznaka left grouped">@row["Oznaka"]</td>
+                <td class="naziv left grouped">@row["Naziv"]</td>
+                <td class="prosjek average grouped"></td>
+                <td class="split cell"></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"]+"-1")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"]+"-2")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"]+"-3")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"]+"-4")" class="input-data" /></td>
+                <td class="split cell"></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"]+"-5")" class="input-data" /></td>
+            </tr>    
+        }
+    }
+</table>
+<div class="action-bar">
+    <input type="submit" class="save button" value="Spremi"/>
+</div>
