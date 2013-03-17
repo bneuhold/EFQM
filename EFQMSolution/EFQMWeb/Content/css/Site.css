@@ -337,6 +337,7 @@ table.upitnik.table-editor{}
 .upitnik.table-editor td.cell{border:solid 1px #999;border-right:none;}
 .upitnik.table-editor td.cell.last{border-right:solid 1px #999;}
 .upitnik.table-editor td.cell.split{border:none;}
+.upitnik.table-editor td.average{width:50px;}
 .upitnik.table-editor td.input-value.cell{width:100px;}
 .upitnik.table-editor td.grouped{border-bottom:solid 1px #333;}
 

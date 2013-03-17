@@ -102,6 +102,11 @@ namespace Library.DataAccess
             return ret_val;
         }
 
+        protected void ExecuteNonQuery(DbCommand command)
+        {
+            _dbView.ExecuteNonQuery(command);
+        }
+
         protected IDataReader ExecuteReader(string storedProcedure, params object[] paramValues)
         {
             return _dbView.ExecuteReader(storedProcedure, paramValues);

@@ -56,6 +56,11 @@ Object.keys = Object.keys || (function () {
     };
 })();
 
+Object.isDefined = function (input) {
+    if ((input == null) || (input === undefined)) return false;
+    else return true;
+};
+
 var API = {};
 
 API.Monitor = {
@@ -81,6 +86,8 @@ API.Monitor = {
         API.Monitor._load = false;
     }
 };
+
+API.Settings = {};
 
 API.Console = {
     log: function (text) {
@@ -825,6 +832,34 @@ API.Design.grid = {
         });
         $(pagerContainer).append(pagingControl);
     }
+};
+
+API.Design.upitnik = {
+    init: function (ctx) {
+
+        $("input.input-data").blur(function (e) {
+            var row = $(this).parents("tr:first");
+            var sum = 0;
+            var l = $("input.input-data", row).each(function () {
+                sum += parseInt($(this).val());
+            });
+            var avg = Math.round(sum / l.length);
+            $(".average", row).html(avg);
+        });
+    },
+    load: function (id) {
+        API.Ajax.PostJson(API.Communication.url + "home/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
+    },
+    loadSuccess: function (ctx, data) {
+        $(data.Vrijednosti).each(function () {
+            var d = this;
+            $("#"+d.O + "-" + d.A).val(d.V);
+        });
+    },
+    loadError: function () {
+
+    }
+
 };
 
 /**

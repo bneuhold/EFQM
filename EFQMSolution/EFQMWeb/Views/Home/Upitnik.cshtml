@@ -1,6 +1,16 @@
 ﻿@model EFQMWeb.Models.HuogUpitnikModel
-@using System.Data
+@using System.Data;
+@using EFQMWeb.Common.Util;
+@{ #pragma warning disable }
+@if (false)
+{
+    <script src="~/content/js/jquery-1.5.1.js" type="text/javascript"></script>
 
+    <script src="~/content/js/modernizr-1.7.min.js" type="text/javascript"></script>
+    <script src="~/content/js/api-framework.js" type="text/javascript"></script>
+
+}
+@{ #pragma warning restore }
 @{
     ViewBag.Title = "Upitnik";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,6 +20,13 @@
 
 <script language="javascript" type="text/javascript">
     $(function () {
+        API.Design.upitnik.init();
+        if ($("#UpitnikId").val() == "") {
+            $(".input-value .input-data").each(function () { $(this).val(0); });
+        } else {
+            API.Design.upitnik.load(parseInt($("#UpitnikId").val()));
+        }
+        
         $(".save.button").click(function (e) {
             var result = { Vrijednosti: [] };
             if ($("#UpitnikId").val() != "") {
@@ -22,6 +39,20 @@
                 }
                 result.Vrijednosti.push({ P: $(this).attr("pitanjeId"), O: $(this).attr("oznaka"), A: $(this).attr("atribut"), V: val })
             });
+
+            var success = function (ctx, data) {
+
+            };
+
+            var error = function (context, jqXHR, textStatus) {
+
+            };
+
+            var complete = function () {
+
+            };
+
+            API.Ajax.PostJson(API.Communication.url + "home/save", { json: JSON.stringify(result) }, {}, null, success, error, complete);
         });
 
     });
@@ -30,7 +61,7 @@
 }
 
 <h2>Upitnik</h2>
-
+<input type="hidden" id="UpitnikId" name="UpitnikID" value="@(Model.UpitnikId.HasValue? Model.UpitnikId.ToString() : "")"/>
 <h3>Grupe</h3>
 <ul>
     @foreach (DataRow row in Model.Grupe.Rows)
@@ -69,20 +100,20 @@
     {
         if ((int)row["GrupaId"] < 6)
         {
-            <tr id="@("row_"+row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
+            <tr id="@("row_" + row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
                 <td class="oznaka left grouped">@row["Oznaka"]</td>
                 <td class="naziv left grouped">@row["Naziv"]</td>
                 <td class="prosjek average grouped"></td>
                 <td class="split cell"></td>
                 <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"]+"-2")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"]+"-3")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"]+"-4")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"]+"-5")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="6" id="@(row["Oznaka"]+"-6")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="7" id="@(row["Oznaka"]+"-7")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="6" id="@(row["Oznaka"] + "-6")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="7" id="@(row["Oznaka"] + "-7")" class="input-data" /></td>
             </tr>
         }
     }
@@ -114,17 +145,17 @@
     {
         if ((int)row["GrupaId"] >= 6)
         {
-            <tr id="@("row_"+row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
+            <tr id="@("row_" + row["Oznaka"])" grupaId="@row["GrupaId"]" faktor="@row["faktor"]">
                 <td class="oznaka left grouped">@row["Oznaka"]</td>
                 <td class="naziv left grouped">@row["Naziv"]</td>
                 <td class="prosjek average grouped"></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"]+"-1")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"]+"-2")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"]+"-3")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"]+"-4")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
+                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"]+"-5")" class="input-data" /></td>
+                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
             </tr>    
         }
     }
