@@ -1,0 +1,54 @@
+﻿@using System.Data;
+@using EFQMWeb.Common.Util;
+@{ #pragma warning disable }
+@if (false)
+{
+    <script src="~/content/js/jquery-1.5.1.js" type="text/javascript"></script>
+
+    <script src="~/content/js/modernizr-1.7.min.js" type="text/javascript"></script>
+    <script src="~/content/js/api-framework.js" type="text/javascript"></script>
+
+}
+@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script language="javascript" type="text/javascript">
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            // Create and populate the data table.
+            var data = google.visualization.arrayToDataTable([
+                ['Ukupni rezultat', 'Prosjek', 'Vaš upitnik'],
+                ['Vodstvo', 87, 84],
+                ['Poslovna politika i strategija', 35, 45],
+                ['Zaposlenici', 76, 87],
+                ['Partnerstvo i resursi', 45, 65],
+                ['Procesi', 37, 24],
+                ['Rezultati klijenata', 42, 64],
+                ['Rezultati zaposlenika', 53, 55],
+                ['Rezultati društva', 31, 67],
+                ['Ključni rezultati izvršenja', 98, 92]
+              ]);
+
+            // Create and draw the visualization.
+            new google.visualization.ColumnChart(document.getElementById('visualization')).
+              draw(data,
+                   { title: "Yearly Coffee Consumption by Country",
+                       width: 600, height: 400,
+                       hAxis: { title: "Year" }
+                   }
+              );
+
+        }
+    </script>
+}
+<h2>Result</h2>
+
+<div id="visualization"></div>

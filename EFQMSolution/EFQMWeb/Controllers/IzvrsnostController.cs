@@ -48,6 +48,11 @@ namespace EFQMWeb.Controllers
             return View(model);
         }
 
+        public ActionResult Result(int? id, string upitnikIDs)
+        {
+            return View();
+        }
+
         public ActionResult Load(int UpitnikId)
         {
             if (MySession.CurrentUser == null)
@@ -121,7 +126,7 @@ namespace EFQMWeb.Controllers
 
             int id = Database.UpitnikSave(upitnik, h, MySession.CurrentUser.IdUser);
 
-            return Json(new { Status = 0, UpitnikID = id });
+            return Json(new { Status = 0, UpitnikId = id });
         }
 
     }

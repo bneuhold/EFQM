@@ -840,6 +840,9 @@ API.Design.upitnik = {
     init: function (ctx) {
 
         $("input.input-data").blur(function (e) {
+            if ($(this).val().trim() == "") {
+                $(this).val("0");
+            }
             var row = $(this).parents("tr:first");
             var sum = 0;
             var l = $("input.input-data", row).each(function () {
@@ -847,7 +850,7 @@ API.Design.upitnik = {
             });
             var avg = Math.round(sum / l.length);
             $(".average", row).html(avg);
-        });
+        }).forceInt100();
     },
     load: function (id) {
         API.Ajax.PostJson(API.Communication.url + "izvrsnost/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
@@ -855,7 +858,7 @@ API.Design.upitnik = {
     loadSuccess: function (ctx, data) {
         $(data.Vrijednosti).each(function () {
             var d = this;
-            $("#"+d.O + "-" + d.A).val(d.V);
+            $("#" + d.O + "-" + d.A).val(d.V);
         });
     },
     loadError: function () {
@@ -1033,6 +1036,36 @@ jQuery.fn.forceNumeric = function () {
                 return true;
 
             return false;
+        });
+    });
+}
+
+jQuery.fn.forceInt100 = function () {
+    return this.each(function () {
+        $(this).keydown(function (e) {
+            var key = e.which || e.keyCode;
+
+            if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+            // numbers
+                         key >= 48 && key <= 57 ||
+            // Numeric keypad
+                         key >= 96 && key <= 105 ||
+            // Backspace and Tab and Enter
+                        key == 8 || key == 9 || key == 13 ||
+            // Home and End
+                        key == 35 || key == 36 ||
+            // left and right arrows
+                        key == 37 || key == 39 ||
+            // Del and Ins
+                        key == 46 || key == 45)
+                return true;
+
+            return false;
+        }).keyup(function (e) {
+            var i = parseInt($(this).val());
+            if (i > 100) {
+                $(this).val("100");
+            }
         });
     });
 }

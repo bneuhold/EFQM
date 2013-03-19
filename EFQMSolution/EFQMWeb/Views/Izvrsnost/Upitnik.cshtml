@@ -44,12 +44,15 @@
 
             var success = function (ctx, data) {
                 $("#UpitnikId").val(data.UpitnikId);
+                var f = function () { 
+                window.location = API.Communication.url + "izvrsnost/result/" + data.UpitnikId;  };
                 if (isInsert) {
                     isInsert = false;
-                    API.Design.fadeMessage.open("Novi upitnik je uspješno spremljen. Izračunavam rezultate...");
+                    API.Design.fadeMessage.open("Novi upitnik je uspješno spremljen. Izračunavam rezultate...",2, f);
                 } else {
-                    API.Design.fadeMessage.open("Uspješno ste promijenili postojeći upitnik. Izračunavam rezultate...");
+                    API.Design.fadeMessage.open("Uspješno ste promijenili postojeći upitnik. Izračunavam rezultate...", 2, f);
                 }
+
             };
 
             var error = function (context, jqXHR, textStatus) {
@@ -69,7 +72,7 @@
 }
 
 <h2>Upitnik</h2>
-<input type="hidden" id="UpitnikId" name="UpitnikID" value="@(Model.UpitnikId.HasValue? Model.UpitnikId.ToString() : "")"/>
+<input type="hidden" id="UpitnikId" name="UpitnikId" value="@(Model.UpitnikId.HasValue? Model.UpitnikId.ToString() : "")"/>
 <h3>Grupe</h3>
 <ul>
     @foreach (DataRow row in Model.Grupe.Rows)
@@ -92,7 +95,9 @@
         <td colspan="3" class="">Ocjenjivanje i pregled</td>
     </tr>
     <tr class="header small">
-        <td colspan="4"></td>
+        <td colspan="2"></td>
+        <td>Prosjek</td>
+        <td></td>
         <td>Pouzdan</td>
         <td>Integriran</td>
         <td></td>
@@ -140,7 +145,9 @@
         <td class="">Elementi</td>
     </tr>
     <tr class="header small">
-        <td colspan="4"></td>
+        <td colspan="2"></td>
+        <td>Prosjek</td>
+        <td></td>
         <td>Trendovi</td>
         <td>Ciljevi</td>
         <td>Usporedbe</td>
