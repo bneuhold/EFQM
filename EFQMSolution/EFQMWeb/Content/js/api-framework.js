@@ -851,6 +851,8 @@ API.Design.upitnik = {
             var avg = Math.round(sum / l.length);
             $(".average", row).html(avg);
         }).forceInt100();
+
+        
     },
     load: function (id) {
         API.Ajax.PostJson(API.Communication.url + "izvrsnost/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
@@ -859,6 +861,10 @@ API.Design.upitnik = {
         $(data.Vrijednosti).each(function () {
             var d = this;
             $("#" + d.O + "-" + d.A).val(d.V);
+        });
+        
+        $("td.average").each(function () {
+            $("input.input-data:first", $(this).parent()).trigger("blur");
         });
     },
     loadError: function () {

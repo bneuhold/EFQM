@@ -25,6 +25,7 @@
         if ($("#UpitnikId").val() == "") {
             $(".input-value .input-data").each(function () { $(this).val(0); });
             isInsert = true;
+            $("td.average").each(function () { $(this).html("0"); });
         } else {
             API.Design.upitnik.load(parseInt($("#UpitnikId").val()));
         }
