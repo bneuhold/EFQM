@@ -20,13 +20,15 @@
 
 <script language="javascript" type="text/javascript">
     $(function () {
+        var isInsert = false;
         API.Design.upitnik.init();
         if ($("#UpitnikId").val() == "") {
             $(".input-value .input-data").each(function () { $(this).val(0); });
+            isInsert = true;
         } else {
             API.Design.upitnik.load(parseInt($("#UpitnikId").val()));
         }
-        
+
         $(".save.button").click(function (e) {
             var result = { Vrijednosti: [] };
             if ($("#UpitnikId").val() != "") {
@@ -41,18 +43,24 @@
             });
 
             var success = function (ctx, data) {
-
+                $("#UpitnikId").val(data.UpitnikId);
+                if (isInsert) {
+                    isInsert = false;
+                    API.Design.fadeMessage.open("Novi upitnik je uspješno spremljen. Izračunavam rezultate...");
+                } else {
+                    API.Design.fadeMessage.open("Uspješno ste promijenili postojeći upitnik. Izračunavam rezultate...");
+                }
             };
 
             var error = function (context, jqXHR, textStatus) {
-
+                API.Design.fadeMessage.open("Greška!");
             };
 
             var complete = function () {
 
             };
 
-            API.Ajax.PostJson(API.Communication.url + "home/save", { json: JSON.stringify(result) }, {}, null, success, error, complete);
+            API.Ajax.PostJson(API.Communication.url + "izvrsnost/save", { json: JSON.stringify(result) }, {}, null, success, error, complete);
         });
 
     });

@@ -88,6 +88,7 @@ API.Monitor = {
 };
 
 API.Settings = {};
+API.Actions = {};
 
 API.Console = {
     log: function (text) {
@@ -584,11 +585,12 @@ API.Design.common = {
             if (!$(this).hasClass("rounded") && ($(this).attr("type") != "checkbox")) $(this).addClass("rounded").addClass("border");
         });
 
+        $(".button").button();
+
         $("a[href='#']").click(function (e) { e.preventDefault(); });
 
         $(".initial-hidden").hide().removeClass("initial-hidden");
         // $(".date_picker").datepicker($.datepicker.regional[API.Settings.culture], { onClose: function (dateText) { /* * */ } });
-        $("input,textarea").placeholder();
         $(".date_picker").datepicker($.datepicker.regional[API.Settings.culture]);
     }
 };
@@ -848,7 +850,7 @@ API.Design.upitnik = {
         });
     },
     load: function (id) {
-        API.Ajax.PostJson(API.Communication.url + "home/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
+        API.Ajax.PostJson(API.Communication.url + "izvrsnost/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
     },
     loadSuccess: function (ctx, data) {
         $(data.Vrijednosti).each(function () {
@@ -995,15 +997,7 @@ API.base64 = {
 }
 
 API.Design.masterInit = function () {
-    if ($.browser.msie) {
-        var version = parseFloat($.browser.version);
-        if ((version >= 8) && (version <= 9)) {
-            $("input.button_create, input.button_import").click(function (e) {
-                e.preventDefault();
-                window.location = $(this).parent().attr("href");
-            });
-        }
-    }
+    
 
     API.Design.common.init();
     API.Design.loader.init({ defaultText: API.Actions.Loading });

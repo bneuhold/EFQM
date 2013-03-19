@@ -325,6 +325,49 @@ div#title {
 
 
 /*******************************************************************/
+/* FADE MESSAGE BOX */
+.no-title-bar {border-width:2px;}
+.no-title-bar .ui-dialog-titlebar{display:none;}
+.no-title-bar.popup-shadow-border{border-width:1px;
+               -moz-box-shadow:5px 5px 5px #d1cdc4; -webkit-box-shadow:5px 5px 5px #d1cdc4; box-shadow:5px 5px 5px #d1cdc4;}
+.no-title-bar.no-border{border:none;background:transparent;}
+#fade-message-box{font-size:1.2em;padding:10px;line-height:2.2em;text-align:center;}
+
+#loader-box{padding:30px 40px 30px 60px;font-size:1.1em;background:#fff url(../img/ajax-loader-transparent.gif) 20px 50% no-repeat;color:#666;text-align:center;}
+
+/* CONFIRM BOX (dialog) */
+#confirm-box{font-size:1.2em;line-height:1.3em;}
+.confirm-box.ui-dialog, .select-box.ui-dialog{font-size:1em;line-height:1.3em;}
+.confirm-box.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset, .select-box.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{float:none; text-align:center;}
+.confirm-box.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .button, .select-box.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .button{margin: 5px 10px;font-size:1.2em !important;}
+
+.confirm-box.ui-dialog .button.ok{ font-size: 14px; color: #ffffff; height: 36px; border: none; background: #2c99ce; cursor: pointer;}
+.confirm-box.ui-dialog .button.cancel{ font-size: 14px; color: #ffffff; height: 36px; border: none; background: #666; cursor: pointer;}
+.confirm-box.ui-dialog .button .ui-button-text{padding-top:0;padding-bottom:0;}
+.confirm-box.ui-dialog .ui-dialog-buttonpane{border:none;}
+
+.dialog-title { font-weight: bold; margin-bottom:5px }
+.dialog-content { margin-top: 10px; margin-bottom: 5px; }
+.dialog-content-task { margin-top: 10px; margin-bottom: 5px; font-size:12px; }
+.dialog-content-task { margin-left: 11px; }
+.dialog-content-task label , .popup_form label {  width: 90px; margin: 12px 0; color: #404041;}
+.dialog-content-task label.medium , .popup_form label.medium {  width: 150px; margin: 12px 0; color: #404041;display: inline-block;}
+.dialog-content-task label.inline, .popup_form label.inline { display: inline-block; }
+
+.dialog-content-task label.solo, .popup_form label.solo { display: block;}
+.dialog-content-task input.small, .popup_form input.small { width: 100px;}
+.dialog-content-task input.mini, .popup_form input.mini { width: 50px;}
+.dialog-content-task input.medium, .popup_form input.medium { width: 180px;}
+.dialog-content-task input.big { width: 435px;}
+.dialog-content-task textarea.big { width: 275px;}
+.dialog-content-task .form_container,.popup_form .form_container { float: left; display: table; margin: 10px 10px 10px 30px}
+.dialog-content-task .form_row,.popup_form .form_row { display: table-row; margin: 10px 10px;}
+
+
+.action-bar{margin:20px 0px;}
+
+.button.save{background:rgb(35, 119, 23);color:#fff;}
+.button.add{background: #5C87B2;color:#fff;}
 
 table.upitnik.table-editor{}
 
@@ -345,3 +388,4 @@ table.upitnik.table-editor{}
 .upitnik.table-editor td.naziv{width:450px;}
 .upitnik.table-editor td.prosjek.cell{width:50px;}
 .upitnik.table-editor input.input-data{width:30px;text-align:center;}
+
