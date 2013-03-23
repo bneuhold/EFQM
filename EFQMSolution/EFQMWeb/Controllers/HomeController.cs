@@ -20,7 +20,7 @@ namespace EFQMWeb.Controllers
             ViewBag.Message = "Welcome to ASP.NET MVC!";
             if (MySession.CurrentUser == null)
             {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST" };
+                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
             }
             return View();
         }

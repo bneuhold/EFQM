@@ -118,6 +118,7 @@
     <Compile Include="Common\Base\Filters.cs" />
     <Compile Include="Common\DB\DBOperations.cs" />
     <Compile Include="Common\Entity\LoggedUser.cs" />
+    <Compile Include="Common\Izracun.cs" />
     <Compile Include="Common\Util\Json.cs" />
     <Compile Include="Common\Util\MyConfig.cs" />
     <Compile Include="Common\Util\MySession.cs" />

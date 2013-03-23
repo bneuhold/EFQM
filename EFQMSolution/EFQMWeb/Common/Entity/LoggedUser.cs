@@ -9,5 +9,11 @@ namespace EFQMWeb.Common.Entity
     {
         public int IdUser { get; set; }
         public string Name { get; set; }
+        /// <summary>
+        /// IZ - izvodac
+        /// KO - konzultant
+        /// IN - investor
+        /// </summary>
+        public string Tip { get; set; }
     }
 }

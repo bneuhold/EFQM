@@ -9,6 +9,7 @@ using EFQMWeb.Common.Util;
 using System.Collections;
 using EFQMWeb.Models;
 using System.Data;
+using EFQMWeb.Common;
 
 namespace EFQMWeb.Controllers
 {
@@ -21,7 +22,7 @@ namespace EFQMWeb.Controllers
         {
             if (MySession.CurrentUser == null)
             {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST" };
+                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
             }
             return View(Database.HuogUpitnikList(MySession.CurrentUser.IdUser, null));
         }
@@ -31,7 +32,7 @@ namespace EFQMWeb.Controllers
         {
             if (MySession.CurrentUser == null)
             {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST" };
+                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
             }
             HuogUpitnikModel model = new HuogUpitnikModel();
             model.Pitanja = Database.HuogPitanjeList();
@@ -50,6 +51,34 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Result(int? id, string upitnikIDs)
         {
+            UpitnikGraf result = new UpitnikGraf();
+            using (IDataReader reader = Database.GetRezultat(id.Value, MySession.CurrentUser.Tip))
+            {
+                while (reader.Read())
+                {
+                    result.UpitnikId = id.Value;
+                    result.Datum = (DateTime)reader["Datum"];
+                    result.Naziv = reader["Naziv"].ToString();
+                }
+                reader.NextResult();
+                int i = 0;
+                while (reader.Read())
+                {
+                    result.BP[i++] = (int)reader["Vrijednost"];
+                }
+                reader.NextResult();
+                i = 0;
+                while (reader.Read())
+                {
+                    result.AV[i++] = (int)reader["Vrijednost"];
+                }
+                reader.NextResult();
+                i = 0;
+                while (reader.Read())
+                {
+                    result.QR[i++] = (int)reader["Vrijednost"];
+                }
+            }
             return View();
         }
 
@@ -57,7 +86,7 @@ namespace EFQMWeb.Controllers
         {
             if (MySession.CurrentUser == null)
             {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST" };
+                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
             }
             DataTable table = Database.HuogUpitnikList(MySession.CurrentUser.IdUser, UpitnikId);
             PureJson result = new PureJson();
@@ -104,10 +133,11 @@ namespace EFQMWeb.Controllers
         {
             if (MySession.CurrentUser == null)
             {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST" };
+                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
             }
             Upitnik upitnik = JsonConvert.DeserializeObject<Upitnik>(json);
 
+            UpitnikRezultat result= Izracun.Process(upitnik.Prosjek);
             Hashtable h = new Hashtable();
             foreach (UpitnikVrijednostItem item in upitnik.Vrijednosti)
             {
@@ -124,7 +154,7 @@ namespace EFQMWeb.Controllers
                 redak.Vrijednosti[item.A - 1] = item.V;
             }
 
-            int id = Database.UpitnikSave(upitnik, h, MySession.CurrentUser.IdUser);
+            int id = Database.UpitnikSave(upitnik, h, MySession.CurrentUser.IdUser, result, MySession.CurrentUser.Tip);
 
             return Json(new { Status = 0, UpitnikId = id });
         }

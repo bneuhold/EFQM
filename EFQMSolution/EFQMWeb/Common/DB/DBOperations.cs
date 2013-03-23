@@ -68,7 +68,7 @@ namespace EFQMWeb.Common.DB
             }
         }
 
-        public int UpitnikSave(Upitnik input, Hashtable vrijednosti, int UserId)
+        public int UpitnikSave(Upitnik input, Hashtable vrijednosti, int UserId, UpitnikRezultat rezultat, string tip)
         {
             int result = 0;
             bool isInsert = true;
@@ -100,33 +100,39 @@ namespace EFQMWeb.Common.DB
                         result = (int)GetParameterValue(command, "Id");
                     }
                 }
-                using (DbCommand command = GetCommand(isInsert ? "tblHuogUpitnikVrijednost_insert" : "tblHuogUpitnikVrijednost_update"))
+                using (DbCommand command = GetCommand("tblHuogRezultat_Save"))
                 {
-                    foreach (var item in vrijednosti.Keys)
+                    foreach (UpitnikRezultatItem item in rezultat.Grupe)
                     {
-                        //clear old values
-                        for (var i=1; i<=10;i++)
-	                    {
-		                    SetParameterValue(command,"@Vrijednost"+i,DBNull.Value);
-	                    }
-                        UpitnikVrijednostRezultat row = (UpitnikVrijednostRezultat)vrijednosti[item];
-                        var counter=0;
-                        foreach (int? v in row.Vrijednosti)
-	                    {
-                            counter++;
-		                    if(v.HasValue)
-                                SetParameterValue(command,"@Vrijednost"+counter,v.Value);
-	                    }
+                        SetParameterValue(command, "@GrupaId", item.Grupa);
                         SetParameterValue(command, "@UpitnikId", result);
-                        SetParameterValue(command,"@PitanjeId",row.PitanjeId);
+                        SetParameterValue(command, "@Vrijednost", item.Vrijednost);
+                        SetParameterValue(command, "@Tip", tip);
+                        SetParameterValue(command, "@Vrsta", "QR");
                         ExecuteNonQuery(command);
                     }
+                    
+                }
+                using (DbCommand command = GetCommand(isInsert ? "tblHuogRezultat_insert" : "tblHuogRezultat_update"))
+                {
                     
                 }
                 scope.Complete();
             }
 
             return result;
+        }
+
+        public IDataReader GetRezultat(int UpitnikId, string Tip)
+        {
+
+            using (DbCommand command = GetCommand("tblHuogResult_Rezultat"))
+            {
+                SetParameterValue(command, "@UpitnikId", UpitnikId);
+                SetParameterValue(command, "@Tip", Tip);
+                return ExecuteReader(command);
+            }
+            
         }
 
         public LoggedUser Login(string username, string password)
