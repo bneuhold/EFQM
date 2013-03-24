@@ -13,6 +13,7 @@ using EFQMWeb.Common;
 
 namespace EFQMWeb.Controllers
 {
+    [Authorize, UserInSessionAttribute]
     public class IzvrsnostController : BaseController
     {
         //
@@ -20,26 +21,18 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Index()
         {
-            if (MySession.CurrentUser == null)
-            {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
-            }
-            return View(Database.HuogUpitnikList(MySession.CurrentUser.IdUser, null));
+            return View(Database.HuogUpitnikList(MySession.CurrentUser.Id, null));
         }
 
 
         public ActionResult Upitnik(int? id)
         {
-            if (MySession.CurrentUser == null)
-            {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
-            }
             HuogUpitnikModel model = new HuogUpitnikModel();
             model.Pitanja = Database.HuogPitanjeList();
             model.Grupe = Database.HuogGrupaList();
             if (id.HasValue)
             {
-                DataTable table = Database.HuogUpitnikList(MySession.CurrentUser.IdUser, id.Value);
+                DataTable table = Database.HuogUpitnikList(MySession.CurrentUser.Id, id.Value);
                 if (table.Rows.Count == 1)
                 {
                     model.UpitnikId = id;
@@ -52,7 +45,7 @@ namespace EFQMWeb.Controllers
         public ActionResult Result(int? id, string upitnikIDs)
         {
             UpitnikGraf result = new UpitnikGraf();
-            using (IDataReader reader = Database.GetRezultat(id.Value, MySession.CurrentUser.Tip))
+            using (IDataReader reader = Database.GetRezultat(id.Value, MySession.CurrentUser.Type))
             {
                 while (reader.Read())
                 {
@@ -64,31 +57,27 @@ namespace EFQMWeb.Controllers
                 int i = 0;
                 while (reader.Read())
                 {
-                    result.BP[i++] = (int)reader["Vrijednost"];
+                    result.BP[i++] = (int)Math.Round((decimal)reader["Vrijednost"],0);
                 }
                 reader.NextResult();
                 i = 0;
                 while (reader.Read())
                 {
-                    result.AV[i++] = (int)reader["Vrijednost"];
+                    result.AV[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
                 }
                 reader.NextResult();
                 i = 0;
                 while (reader.Read())
                 {
-                    result.QR[i++] = (int)reader["Vrijednost"];
+                    result.QR[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
                 }
             }
-            return View();
+            return View(result);
         }
 
         public ActionResult Load(int UpitnikId)
         {
-            if (MySession.CurrentUser == null)
-            {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
-            }
-            DataTable table = Database.HuogUpitnikList(MySession.CurrentUser.IdUser, UpitnikId);
+            DataTable table = Database.HuogUpitnikList(MySession.CurrentUser.Id, UpitnikId);
             PureJson result = new PureJson();
             if (table.Rows.Count != 1)
             {
@@ -131,10 +120,6 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Save(string json)
         {
-            if (MySession.CurrentUser == null)
-            {
-                MySession.CurrentUser = new Common.Entity.LoggedUser() { IdUser = 1, Name = "TEST", Tip = "IZ" };
-            }
             Upitnik upitnik = JsonConvert.DeserializeObject<Upitnik>(json);
 
             UpitnikRezultat result= Izracun.Process(upitnik.Prosjek);
@@ -154,7 +139,7 @@ namespace EFQMWeb.Controllers
                 redak.Vrijednosti[item.A - 1] = item.V;
             }
 
-            int id = Database.UpitnikSave(upitnik, h, MySession.CurrentUser.IdUser, result, MySession.CurrentUser.Tip);
+            int id = Database.UpitnikSave(upitnik, h, MySession.CurrentUser.Id, result, MySession.CurrentUser.Type);
 
             return Json(new { Status = 0, UpitnikId = id });
         }

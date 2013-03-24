@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Globalization;
 using System.Text;
+using EFQMWeb.Common.Util;
+using System.Web.Security;
+using System.Web.Routing;
 
 namespace EFQMWeb.Common.Base
 {
@@ -205,6 +208,29 @@ namespace EFQMWeb.Common.Base
             filterContext.HttpContext.Response.Cache.SetNoStore();
 
             base.OnResultExecuting(filterContext);
+        }
+    }
+
+    public class UserInSessionAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (MySession.CurrentUser == null)
+            {
+                FormsAuthentication.SignOut();
+                RouteValueDictionary redirectTargetDictionary = new RouteValueDictionary();
+                redirectTargetDictionary.Add("action", "Index");
+                redirectTargetDictionary.Add("controller", "Account");
+
+                filterContext.Result = new RedirectToRouteResult(redirectTargetDictionary);
+            }
+            else
+            {
+                
+                base.OnActionExecuting(filterContext);
+            }
+
+            
         }
     }
 }

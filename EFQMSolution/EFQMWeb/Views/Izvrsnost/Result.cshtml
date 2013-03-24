@@ -1,4 +1,6 @@
-﻿@using System.Data;
+﻿
+@model EFQMWeb.Models.UpitnikGraf
+@using System.Data;
 @using EFQMWeb.Common.Util;
 @{ #pragma warning disable }
 @if (false)
@@ -25,30 +27,29 @@
 
             // Create and populate the data table.
             var data = google.visualization.arrayToDataTable([
-                ['Ukupni rezultat', 'Prosjek', 'Vaš upitnik'],
-                ['Vodstvo', 87, 84],
-                ['Poslovna politika i strategija', 35, 45],
-                ['Zaposlenici', 76, 87],
-                ['Partnerstvo i resursi', 45, 65],
-                ['Procesi', 37, 24],
-                ['Rezultati klijenata', 42, 64],
-                ['Rezultati zaposlenika', 53, 55],
-                ['Rezultati društva', 31, 67],
-                ['Ključni rezultati izvršenja', 98, 92]
+                ['Ukupni rezultat', 'Najbolja praksa', 'Prosjek', 'Vaš upitnik'],
+                ['Vodstvo', @Model.BP[0], @Model.AV[0], @Model.QR[0]],
+                ['Poslovna politika i strategija', @Model.BP[1], @Model.AV[1], @Model.QR[1]],
+                ['Zaposlenici', @Model.BP[2], @Model.AV[2], @Model.QR[2]],
+                ['Partnerstvo i resursi', @Model.BP[3], @Model.AV[3], @Model.QR[3]],
+                ['Procesi', @Model.BP[4], @Model.AV[4], @Model.QR[4]],
+                ['Rezultati klijenata', @Model.BP[5], @Model.AV[5], @Model.QR[5]],
+                ['Rezultati zaposlenika', @Model.BP[6], @Model.AV[6], @Model.QR[6]],
+                ['Rezultati društva', @Model.BP[7], @Model.AV[7], @Model.QR[7]],
+                ['Ključni rezultati izvršenja', @Model.BP[8], @Model.AV[8], @Model.QR[8]]
               ]);
 
             // Create and draw the visualization.
             new google.visualization.ColumnChart(document.getElementById('visualization')).
               draw(data,
-                   { title: "Yearly Coffee Consumption by Country",
-                       width: 900, height: 700,
-                       hAxis: { title: "Year" }
+                   { title: "@Model.Naziv",
+                       width: 900, height: 700
                    }
               );
 
         }
     </script>
 }
-<h2>Result</h2>
+<h2>Rezultat upitnika i usporedba</h2>
 
 <div id="visualization"></div>

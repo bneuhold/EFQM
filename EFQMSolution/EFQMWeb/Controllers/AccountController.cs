@@ -6,14 +6,21 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using EFQMWeb.Models;
+using EFQMWeb.Common.Base;
+using EFQMWeb.Common.Util;
 
 namespace EFQMWeb.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
 
         //
         // GET: /Account/LogOn
+
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         public ActionResult LogOn()
         {
@@ -26,29 +33,26 @@ namespace EFQMWeb.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
+            PureJson result = new PureJson();
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                LoggedUser user = Database.Login(model.Email, model.Password);
+                if (user!=null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
+                    MySession.CurrentUser = user;
+                    using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
                     {
-                        return Redirect(returnUrl);
+                        jRoot.Add("Status", 0);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    return new SimpleJsonResult(result);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+            {
+                jRoot.Add("Status", 1);
+            }
+            return new SimpleJsonResult(result);
         }
 
         //
@@ -58,7 +62,7 @@ namespace EFQMWeb.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
         //
@@ -73,27 +77,37 @@ namespace EFQMWeb.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        public ActionResult Register(RegisterModel model)
+        public ActionResult Register(LoggedUser model)
         {
+            PureJson result = new PureJson();
             if (ModelState.IsValid)
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
-                if (createStatus == MembershipCreateStatus.Success)
+                LoggedUser user = Database.Login(model.Email, model.Password);
+                if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+                    {
+                        jRoot.Add("Status", 2);
+                    }
+                    return new SimpleJsonResult(result);
                 }
-                else
+                user = Database.Register(model);
+                if (user != null)
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    FormsAuthentication.SetAuthCookie(model.Email, false);
+                    MySession.CurrentUser = user;
+                    using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+                    {
+                        jRoot.Add("Status", 0);
+                    }
+                    return new SimpleJsonResult(result);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+            {
+                jRoot.Add("Status", 1);
+            }
+            return new SimpleJsonResult(result);
         }
 
         //

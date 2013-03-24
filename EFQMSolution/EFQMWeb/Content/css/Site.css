@@ -4,7 +4,7 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #5c87b2;
+    background-color: #dedede;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -83,11 +83,20 @@ page width. Or, you can specify an exact pixel width. */
 }
 
 header, #header {
-    position: relative;
+    
     margin-bottom: 0px;
     color: #000;
     padding: 0;
+    background-color:#fff;
+    height:120px;
+    padding-top:20px;
 }
+.menu-wrapper{background: #6D6E71;margin-bottom:20px}
+
+header .wrapper{position: relative;width: 90%;margin-left: auto;margin-right: auto;}
+
+header .wrapper .header-right{position:absolute;width:400px;top:10px;right:20px;}
+header .wrapper .in-logo{position:absolute;right:20px}
 
 header h1, #header h1 {
     font-weight: bold;
@@ -103,10 +112,11 @@ header h1, #header h1 {
 #main {
     padding: 30px 30px 15px 30px;
     background-color: #fff;
-    border-radius: 4px 0 0 0;
-    -webkit-border-radius: 4px 0 0 0;
-    -moz-border-radius: 4px 0 0 0;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
 }
+.login-register #main{margin-top:30px;}
 
 footer, 
 #footer {
@@ -125,11 +135,10 @@ footer,
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu {
-    border-bottom: 1px #5C87B2 solid;
     padding: 0 0 2px;
     position: relative;
     margin: 0;
-    text-align: right;
+    text-align: left;
 }
 
 ul#menu li {
@@ -150,11 +159,11 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
-    border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
+    background-color: #dedede;
+    color: #333;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
 }
 
 ul#menu li a:hover {
@@ -163,7 +172,7 @@ ul#menu li a:hover {
 }
 
 ul#menu li a:active {
-    background-color: #a6e2a6;
+    background-color: #999;
     text-decoration: none;
 }
 
@@ -171,7 +180,6 @@ ul#menu li.selected a {
     background-color: #fff;
     color: #000;
 }
-
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
@@ -213,22 +221,20 @@ input[type="submit"] {
 
 /* TABLE
 ----------------------------------------------------------*/
-
 table {
-    border: solid 1px #e8eef4;
     border-collapse: collapse;
 }
 
 table td {
     padding: 5px;
-    border: solid 1px #e8eef4;
+    border: solid 1px #DEDEDE;
 }
 
 table th {
     padding: 6px 5px;
     text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
+    background-color: #DEDEDE;
+    border: solid 1px #DEDEDE;
 }
 
 /* MISC  
@@ -243,7 +249,7 @@ table th {
 
 nav, 
 #menucontainer {
-    margin-top: 40px;
+    padding: 20px 0px;
 }
 
 div#title {
@@ -252,28 +258,19 @@ div#title {
     text-align: left;
 }
 
-#logindisplay {
-    font-size: 1.1em;
+#logindisplay, #userdisplay {
+    font-size: 1em;
+    font-weight:bold;
     display: block;
     text-align: right;
-    margin: 10px;
-    color: White;
+    color: #333;
+    position:absolute;
+    right:0px;
+    top:80px
 }
+#logindisplay a{color:#666}
+#userdisplay .logout{color:#999;font-weight:normal;}
 
-#logindisplay a:link {
-    color: white;
-    text-decoration: underline;
-}
-
-#logindisplay a:visited {
-    color: white;
-    text-decoration: underline;
-}
-
-#logindisplay a:hover {
-    color: white;
-    text-decoration: none;
-}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
@@ -323,6 +320,16 @@ div#title {
     width: 6em;
 }
 
+/********************************************************************/
+
+.form-container{}
+.form-container .row{padding:5px 0px;}
+.form-container .row .label{width: 140px;display: inline-block;}
+
+.login-register .login.form-container{float:left;width:400px;}
+.login-register .register.form-container{float:left;width:500px;margin-left:20px;}
+.login-register .login.form-container .label{width:100px}
+
 
 /*******************************************************************/
 /* FADE MESSAGE BOX */
@@ -371,10 +378,10 @@ div#title {
 
 table.upitnik.table-editor{}
 
-.upitnik.table-editor td{text-align:center;padding:5px;border:solid 1px #e8eef4;}
+.upitnik.table-editor td{text-align:center;padding:5px;border:solid 1px #dedede;}
 .upitnik.table-editor .header.big{font-size:18px;font-weight:bold;}
 .upitnik.table-editor .header.small{font-size:16px;}
-.upitnik.table-editor .header td{border:none;border-collapse:collapse;color:#39c;}
+.upitnik.table-editor .header td{border:none;border-collapse:collapse;color:#333;}
 
 .upitnik.table-editor td.left{text-align:left;}
 .upitnik.table-editor td.cell{border:solid 1px #999;border-right:none;}

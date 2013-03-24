@@ -17,20 +17,34 @@
     
 </head>
 <body>
+    <header class="header">
+        <div class="wrapper">
+            <a href="http://www.huog.hr/">
+                <img class="logo" src="/content/img/logo-hr.png" alt="CROATIAN ASSOCIATION FOR CONTRUCTION MANAGEMENT">
+            </a>
+
+            <img src="/content/img/in-logo.png" alt="in" class="in-logo">
+            <div class="header-right">
+                <div id="logindisplay">
+                    @Html.Partial("_LogOnPartial")
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </header>
+    <div class="menu-wrapper">
+        <div id="menucontainer" class="page">
+            <ul id="menu">
+                <li>@Html.ActionLink("Moji podaci", "UserInfo", "Home")</li>
+                <li>@Html.ActionLink("Poslovna Izvrsnost", "Index", "Izvrsnost")</li>
+            </ul>
+        </div>
+    </div>
     <div class="page">
-        <div id="header">
-            <div id="title">
-                <h1>Poslovna izvrsnost</h1>
-            </div>
-            <div id="logindisplay">
-                @Html.Partial("_LogOnPartial")
-            </div>
-            <div id="menucontainer">
-                <ul id="menu">
-                    <li>@Html.ActionLink("Moji podaci", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Poslovna Izvrsnost", "Index", "Izvrsnost")</li>
-                </ul>
-            </div>
+        
+        <div id="">
+            
+            
         </div>
         <div id="main">
             @RenderBody()

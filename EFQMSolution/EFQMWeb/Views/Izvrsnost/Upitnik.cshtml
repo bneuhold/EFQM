@@ -76,18 +76,11 @@
 
 }
 
-<h2>Upitnik</h2>
+<h2>Upitnik o poslovnoj izvrsnosti</h2>
 <input type="hidden" id="UpitnikId" name="UpitnikId" value="@(Model.UpitnikId.HasValue? Model.UpitnikId.ToString() : "")"/>
-<h3>Grupe</h3>
-<ul>
-    @foreach (DataRow row in Model.Grupe.Rows)
-    {
-        <li>@row["Naziv"]</li>
-    }
-</ul>
 
-<h3>Pitanje</h3>
-<table class="upitnik table-editor extended">
+<div class="upitnik-wrapper"> 
+    <table class="upitnik table-editor extended">
     <tr class="header big">
         <td></td>
         <td class="left">Podkriterij</td>
@@ -137,9 +130,7 @@
     }
 </table>
 
-<div></div>
-
-<table class="upitnik table-editor shorter">
+    <table class="upitnik table-editor shorter">
     <tr class="header big">
         <td></td>
         <td class="left">Podkriterij</td>
@@ -180,6 +171,7 @@
         }
     }
 </table>
-<div class="action-bar">
-    <input type="submit" class="save button" value="Spremi"/>
+    <div class="action-bar">
+        <input type="submit" class="save button" value="Spremi"/>
+    </div>
 </div>

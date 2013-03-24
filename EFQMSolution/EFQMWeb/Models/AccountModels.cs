@@ -30,8 +30,8 @@ namespace EFQMWeb.Models
     public class LogOnModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        [Display(Name = "e-mail")]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -42,26 +42,22 @@ namespace EFQMWeb.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterModel
+    public class LoggedUser
     {
-        [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
-
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email address")]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        /// <summary>
+        /// IZ - izvodac
+        /// KO - konzultant
+        /// IN - investor
+        /// </summary>
+        public string Type { get; set; }
         public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public string CompanyName { get; set; }
+        public string City { get; set; }
+        public string Employees { get; set; }
+        public string Income { get; set; }
+        public bool Newsletter { get; set; }
     }
 }

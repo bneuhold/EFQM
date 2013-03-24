@@ -327,8 +327,8 @@ WHERE
 		GO
 		
 		CREATE procedure tblHuogUpitnikVrijednost_insert
-			@PitanjeId int
-			, @UpitnikId int
+			@PitanjeId int output
+			@UpitnikId int output
 			, @Vrijednost1 decimal(10,2) = NULL
 			, @Vrijednost2 decimal(10,2) = NULL
 			, @Vrijednost3 decimal(10,2) = NULL
@@ -350,7 +350,7 @@ WHERE
 		INSERT INTO tblHuogUpitnikVrijednost ( 
 		[Vrijednost1], [Vrijednost2], [Vrijednost3], [Vrijednost4], [Vrijednost5], [Vrijednost6], [Vrijednost7], [Vrijednost8], [Vrijednost9], [Vrijednost10]) VALUES (@Vrijednost1, @Vrijednost2, @Vrijednost3, @Vrijednost4, @Vrijednost5, @Vrijednost6, @Vrijednost7, @Vrijednost8, @Vrijednost9, @Vrijednost10) 
 
-		SELECT @ERROR = @@ERROR
+		SELECT @UpitnikId = SCOPE_IDENTITY(), @ERROR = @@ERROR
 
 		IF @ERROR<>0
 			ROLLBACK TRAN
@@ -404,6 +404,97 @@ WHERE
 WHERE
 		PitanjeId = @PitanjeId
 			 AND UpitnikId = @UpitnikId
+ 
+
+		SET @ERROR = @@ERROR
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogUser_insert') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogUser_insert
+		GO
+		
+		CREATE procedure tblHuogUser_insert
+			@Id int output
+			, @Name nvarchar(50) = NULL
+			, @Email nvarchar(50)
+			, @Password nvarchar(20)
+			, @CompanyName nvarchar(255) = NULL
+			, @City nvarchar(255) = NULL
+			, @Type varchar(2)
+			, @Employees nvarchar(50) = NULL
+			, @Income nvarchar(50) = NULL
+			, @Newsletter bit
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		INSERT INTO tblHuogUser ( 
+		[Name], [Email], [Password], [CompanyName], [City], [Type], [Employees], [Income], [Newsletter]) VALUES (@Name, @Email, @Password, @CompanyName, @City, @Type, @Employees, @Income, @Newsletter) 
+
+		SELECT @Id = SCOPE_IDENTITY(), @ERROR = @@ERROR
+
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+
+
+	
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogUser_update') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogUser_update
+		GO
+		
+		CREATE procedure tblHuogUser_update
+			@Id int
+			, @Name nvarchar(50) = NULL
+			, @Email nvarchar(50)
+			, @Password nvarchar(20)
+			, @CompanyName nvarchar(255) = NULL
+			, @City nvarchar(255) = NULL
+			, @Type varchar(2)
+			, @Employees nvarchar(50) = NULL
+			, @Income nvarchar(50) = NULL
+			, @Newsletter bit
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		UPDATE tblHuogUser SET 
+		Name = @Name
+			, Email = @Email
+			, Password = @Password
+			, CompanyName = @CompanyName
+			, City = @City
+			, Type = @Type
+			, Employees = @Employees
+			, Income = @Income
+			, Newsletter = @Newsletter
+WHERE
+		Id = @Id
  
 
 		SET @ERROR = @@ERROR

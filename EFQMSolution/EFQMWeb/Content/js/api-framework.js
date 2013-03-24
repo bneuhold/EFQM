@@ -220,20 +220,22 @@ API.Ajax = {
                         window.location = API.Communication.url;
                     } else if (response.Status == 1) {
                         API.Functions.displayError(textStatus);
-                        if (errorHandler) errorHandler(context, jqXHR, textStatus);
+                        if (errorHandler) errorHandler(context, jqXHR, textStatus, response);
                     } else if (response.Status == -1) {
                         API.Ajax._ajaxError(context, jqXHR, response.Message + "<br/>" + response.StackTrace);
-                        if (errorHandler) errorHandler(context, jqXHR, textStatus);
+                        if (errorHandler) errorHandler(context, jqXHR, textStatus, response);
                     } else if (response.Status == 104) {
                         API.Functions.displayError(textStatus);
-                        if (errorHandler) errorHandler(context, jqXHR, textStatus);
+                        if (errorHandler) errorHandler(context, jqXHR, textStatus, response);
                     } else if (response.Status == 110) {
                         API.Functions.displayError(textStatus);
-                        if (errorHandler) errorHandler(context, jqXHR, textStatus);
+                        if (errorHandler) errorHandler(context, jqXHR, textStatus, response);
+                    } else if (response.Status == 2) {
+                        if (errorHandler) errorHandler(context, jqXHR, textStatus, response);
                     }
                 } else {
                     if ((call.dataType == "html") && (jqXHR.responseText.indexOf("<unauthorized></unauthorized>") > 0)) {
-                        window.location = API.Communication.url + "account/logon";
+                        window.location = API.Communication.url + "account/index";
                         return;
                     }
                     if (successHandler) successHandler(context, response, textStatus, jqXHR);

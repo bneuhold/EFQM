@@ -32,6 +32,7 @@
                 <th>Vrijeme</th>
                 <th>Naziv</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +41,8 @@
             <tr>
                 <td class="datetime">@(((DateTime)row["Datum"]).ToString())</td>
                 <td class="name">@row["Naziv"].ToString()</td>
-                <td><a href="@Url.Action("Upitnik", "Izvrsnost", new { id = row["Id"]})">Promijeni</a></td>
+                <td><a href="@Url.Action("Upitnik", "Izvrsnost", new { id = row["Id"]})">Promijeni upitnik</a></td>
+                <td><a href="@Url.Action("Result", "Izvrsnost", new { id = row["Id"]})">Rezultat upitnika</a></td>
             </tr>
         }
         </tbody>

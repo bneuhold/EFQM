@@ -1,0 +1,98 @@
+﻿@using EFQMWeb.Common.Util;
+@{
+    ViewBag.Title = "UserInfo";
+}
+
+@section Scripts{
+    <script language="javascript" type="text/javascript">
+        $(function () {
+
+            var success = function (ctx, data) {
+                API.Design.fadeMessage.open("Vaši podaci su spremljeni");
+            };
+
+            var error = function (context, jqXHR, textStatus, response) {
+                API.Design.fadeMessage.open("Greška");
+            };
+
+            var complete = function () {
+
+            };
+
+
+            $(".button.save").click(function (e) {
+
+                var container = $(this).parents(".form-container:first");
+                if (!API.Functions.checkRequired(container)) {
+                    API.Design.fadeMessage.open("Molimo popunite obavezna polja");
+                    return;
+                }
+                var data = API.Functions.gatherData(container);
+
+                if (data.Password != data.Password2) {
+                    API.Design.fadeMessage.open("Zaporka i ponovljena zaporka nisu iste!");
+                    return;
+                }
+
+
+                API.Ajax.PostJson(API.Communication.url + "home/saveuser", data, { action: "register" }, null, success, error, complete);
+            });
+        });
+    
+    </script>
+
+}
+
+<h2>Vaši podaci</h2>
+<div class="form-container">
+<div class="row">
+    <span class="label">Email(*):</span><input type="text" name="Email" id="Email" class="required" value="@MySession.CurrentUser.Email" />
+</div>
+<div class="row">
+    <span class="label">Zaporka(*):</span><input type="password" name="Password" id="Password" class="required" value="@MySession.CurrentUser.Password" />
+</div>
+<div class="row">
+    <span class="label">Ponovite zaporku(*):</span><input type="password" name="Password2" id="Password2" class="required" value="@MySession.CurrentUser.Password" />
+</div>
+<div class="row">
+    <span class="label">Naziv firme:</span><input type="text" name="Company" id="Company" value="@MySession.CurrentUser.CompanyName" />
+</div>
+<div class="row">
+    <span class="label">Grad:</span><input type="text" name="City" id="City" value="@MySession.CurrentUser.City" />
+</div>
+<div class="row">
+    <span class="label">Vrsta(*):</span>
+    <select id="Type" class="required" value="@MySession.CurrentUser.Type">
+        <option value="">Odaberite vrstu</option>
+        <option value="INV">Investitor</option>
+        <option value="KON">Konzultant</option>
+        <option value="IZV">Izvođač</option>
+    </select>
+</div>
+<div class="row">
+    <span class="label">Broj zaposlenih:</span>
+    <select id="Employee" value="@MySession.CurrentUser.Employees">
+        <option value="">Odaberite</option>
+        <option value="0-9">0-9</option>
+        <option value="10-49">10-49</option>
+        <option value="50-249">50-249</option>
+        <option value="250+">250 +</option>
+    </select>
+</div>
+<div class="row">
+    <span class="label">Prihod:</span>
+    <select name="Income" id="Income" value="@MySession.CurrentUser.Income">
+        <option value="">Odaberite</option>
+        <option value="10">mikro - do 10 Mio EUR</option>
+        <option value="50">mala - do 50 Mio EUR</option>
+        <option value="250">srednja - do 250 Mio EUR</option>
+        <option value="251">velika - od 250 Mio EUR</option>
+    </select>
+</div>
+<div class="row">
+    <span class="label">Newsletter:</span><input type="checkbox" name="Newsletter" id="Newsletter" value="@MySession.CurrentUser.Newsletter" />
+</div>
+<div class="action-bar">
+    <input type="submit" id="Register" class="button save" value="Spremi"/>
+</div>
+</div>
