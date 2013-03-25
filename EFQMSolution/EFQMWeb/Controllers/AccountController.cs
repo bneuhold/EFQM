@@ -36,11 +36,10 @@ namespace EFQMWeb.Controllers
             PureJson result = new PureJson();
             if (ModelState.IsValid)
             {
-                LoggedUser user = Database.Login(model.Email, model.Password);
-                if (user!=null)
+                MySession.CurrentUser = Database.Login(model.Email, model.Password);
+                if (MySession.CurrentUser != null)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
-                    MySession.CurrentUser = user;
                     using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
                     {
                         jRoot.Add("Status", 0);

@@ -30,5 +30,11 @@ namespace EFQMWeb.Common.Util
             else
                 return (int)input;
         }
+
+        public static string ToJavascriptBool(bool input)
+        {
+            if (input) return "true";
+            else return "false";
+        }
     }
 }

@@ -7,6 +7,10 @@
     <script language="javascript" type="text/javascript">
         $(function () {
 
+            $("#Type").val("@MySession.CurrentUser.Type");
+            $("#Employees").val("@MySession.CurrentUser.Employees");
+            $("#Income").val("@MySession.CurrentUser.Income");
+            $("#Newsletter").prop("checked",@Utils.ToJavascriptBool(MySession.CurrentUser.Newsletter));
             var success = function (ctx, data) {
                 API.Design.fadeMessage.open("Vaši podaci su spremljeni");
             };
@@ -55,23 +59,23 @@
     <span class="label">Ponovite zaporku(*):</span><input type="password" name="Password2" id="Password2" class="required" value="@MySession.CurrentUser.Password" />
 </div>
 <div class="row">
-    <span class="label">Naziv firme:</span><input type="text" name="Company" id="Company" value="@MySession.CurrentUser.CompanyName" />
+    <span class="label">Naziv firme:</span><input type="text" name="CompanyName" id="CompanyName" value="@MySession.CurrentUser.CompanyName" />
 </div>
 <div class="row">
     <span class="label">Grad:</span><input type="text" name="City" id="City" value="@MySession.CurrentUser.City" />
 </div>
 <div class="row">
     <span class="label">Vrsta(*):</span>
-    <select id="Type" class="required" value="@MySession.CurrentUser.Type">
+    <select id="Type" class="required">
         <option value="">Odaberite vrstu</option>
-        <option value="INV">Investitor</option>
-        <option value="KON">Konzultant</option>
-        <option value="IZV">Izvođač</option>
+        <option value="IN">Investitor</option>
+        <option value="KO">Konzultant</option>
+        <option value="IZ">Izvođač</option>
     </select>
 </div>
 <div class="row">
     <span class="label">Broj zaposlenih:</span>
-    <select id="Employee" value="@MySession.CurrentUser.Employees">
+    <select id="Employees">
         <option value="">Odaberite</option>
         <option value="0-9">0-9</option>
         <option value="10-49">10-49</option>
@@ -81,7 +85,7 @@
 </div>
 <div class="row">
     <span class="label">Prihod:</span>
-    <select name="Income" id="Income" value="@MySession.CurrentUser.Income">
+    <select name="Income" id="Income">
         <option value="">Odaberite</option>
         <option value="10">mikro - do 10 Mio EUR</option>
         <option value="50">mala - do 50 Mio EUR</option>
@@ -90,7 +94,7 @@
     </select>
 </div>
 <div class="row">
-    <span class="label">Newsletter:</span><input type="checkbox" name="Newsletter" id="Newsletter" value="@MySession.CurrentUser.Newsletter" />
+    <span class="label">Newsletter:</span><input type="checkbox" name="Newsletter" id="Newsletter" />
 </div>
 <div class="action-bar">
     <input type="submit" id="Register" class="button save" value="Spremi"/>

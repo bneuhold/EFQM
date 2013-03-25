@@ -9,6 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.Unity;
 using Microsoft.Practices.EnterpriseLibrary.Data.Configuration.Unity;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.Unity;
+using System.Web.Security;
 
 namespace EFQMWeb
 {
@@ -44,6 +45,25 @@ namespace EFQMWeb
             RegisterRoutes(RouteTable.Routes);
 
             DBOperations.Database = Container.Resolve<DBOperations>();
+        }
+
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+
+
+            HttpCookie authCookie = Context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                /*if (ticket.Expired)
+                {
+                    FormsAuthentication.RenewTicketIfOld(ticket);
+                }*/
+                FormsAuthentication.RenewTicketIfOld(ticket);
+            }
+
+
+
         }
 
         private static IUnityContainer _container = null;

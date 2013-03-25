@@ -35,6 +35,7 @@ namespace EFQMWeb.Controllers
         public ActionResult SaveUser(LoggedUser model)
         {
             PureJson result = new PureJson();
+            model.Id = MySession.CurrentUser.Id;
             LoggedUser user = Database.UserChange(model);
             if (user != null)
             {
