@@ -119,6 +119,8 @@
     <Compile Include="Common\DB\DBOperations.cs" />
     <Compile Include="Common\Entity\Company.cs" />
     <Compile Include="Common\Izracun.cs" />
+    <Compile Include="Common\UrlHelperExtension.cs" />
+    <Compile Include="Common\Util\EmailUtil.cs" />
     <Compile Include="Common\Util\Json.cs" />
     <Compile Include="Common\Util\MyConfig.cs" />
     <Compile Include="Common\Util\MySession.cs" />
@@ -210,6 +212,10 @@
     <ProjectReference Include="..\Library.DataAccess\Library.DataAccess.csproj">
       <Project>{B882F7DF-3A29-4961-BFFB-704A31395CDC}</Project>
       <Name>Library.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MRI.Tools\MRI.Tools.csproj">
+      <Project>{58B11362-2598-469F-8266-B36A64E9D309}</Project>
+      <Name>MRI.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

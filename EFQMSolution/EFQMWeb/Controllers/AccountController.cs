@@ -8,6 +8,8 @@ using System.Web.Security;
 using EFQMWeb.Models;
 using EFQMWeb.Common.Base;
 using EFQMWeb.Common.Util;
+using MRI.Tools;
+using EFQMWeb.Common;
 
 namespace EFQMWeb.Controllers
 {
@@ -93,8 +95,9 @@ namespace EFQMWeb.Controllers
                 user = Database.Register(model);
                 if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.Email, false);
-                    MySession.CurrentUser = user;
+                    SendRegistrationMail(model);
+                    //FormsAuthentication.SetAuthCookie(model.Email, false);
+                    //MySession.CurrentUser = user;
                     using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
                     {
                         jRoot.Add("Status", 0);
@@ -107,6 +110,12 @@ namespace EFQMWeb.Controllers
                 jRoot.Add("Status", 1);
             }
             return new SimpleJsonResult(result);
+        }
+
+        public ActionResult Activate(string key)
+        {
+
+            return View();
         }
 
         //
@@ -162,6 +171,44 @@ namespace EFQMWeb.Controllers
         {
             return View();
         }
+
+        #region email
+        private int SendRegistrationMail(LoggedUser model)
+        {
+            string key = "ID=" + model.Id + "&Type=User";
+            EmailUtil email = new EmailUtil(false);
+
+            string content = "Kako biste potvrdili registraciju na portalu huog.hr kliknite na sljedeći link:" + "<br /><br />"
+                                + Url.AbsoluteAction("Activate", "Account", new { key = Encryption64Util.CryptStringUInt64(key) })
+                                + "<br /><br />"
+                                + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
+            if (email.SendHtmlEmail(content, "Potvrda registracije", "info@huog.hr", model.Email, null, null) == 0)
+            {
+                key = "ID=" + model.Id + "&Type=SuperUser";
+                content = "Prijavljeni korisnik:<br/>"
+                            + "Email: " + model.Email + " <br/>"
+                            + "Ime: " + model.Name + " <br/>"
+                            + "Tvrtka: " + model.CompanyName + " <br/>"
+                            + "Grad: " + model.City + " <br/>"
+                            + "Tip: " + model.Type + " <br/>"
+                            + "Broj Zaposlenih: " + model.Employees + " <br/>"
+                            + "Prihod: " + model.Income + " <br/>"
+                            +"<br /><br />Kako biste ga potvrdili kliknite na sljedeci link: <br/>"
+                            + Url.AbsoluteAction("SuperActivate", "Account", new { key = Encryption64Util.CryptStringUInt64(key) })
+                            + "<br /><br />"
+                            + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
+
+                email.SendHtmlEmail(content, "Potvrda korisničke registracije", "info@huog.hr", MyConfig.GetSetting("EmailConfirmUserReg"), null, null);
+            }
+            else
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        #endregion
 
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
