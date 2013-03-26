@@ -114,8 +114,41 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Activate(string key)
         {
+            LoggedUser user = ActivateAccount(key, "USER");
 
-            return View();
+            return View(user);
+        }
+
+        public ActionResult SuperActivate(string key)
+        {
+
+            LoggedUser user = ActivateAccount(key, "SUPERUSER");
+
+            return View(user);
+        }
+
+        private LoggedUser ActivateAccount(string key, string UserType)
+        {
+            int? id=null;
+            string type = null;
+            string val = Encryption64Util.DecryptStringUInt64(key);
+            string[] keys = val.Split(new char[] { '&' });
+            string[] keyValue = keys[0].Split(new char[] { ':' });
+            if (keyValue[0] == "ID")
+            {
+                id = Utils.ParseInt(keyValue[1]);
+            }
+
+            keyValue = keys[1].Split(new char[] { ':' });
+            if (keyValue[1] == "Type")
+            {
+                type = keyValue[1];
+            }
+            if (id.HasValue && type == UserType)
+            {
+                return Database.ActivateUser(id.Value, type);
+            }
+            return null;
         }
 
         //
@@ -172,10 +205,17 @@ namespace EFQMWeb.Controllers
             return View();
         }
 
+        public ActionResult TestEmail(string to, string content)
+        {
+            EmailUtil email = new EmailUtil(false);
+            ViewBag.Status = email.SendHtmlEmail(content, "Test", "info@huog.hr", to, null, null);
+            return View();
+        }
+
         #region email
         private int SendRegistrationMail(LoggedUser model)
         {
-            string key = "ID=" + model.Id + "&Type=User";
+            string key = "ID=" + model.Id + "&Type=USER";
             EmailUtil email = new EmailUtil(false);
 
             string content = "Kako biste potvrdili registraciju na portalu huog.hr kliknite na sljedeći link:" + "<br /><br />"
@@ -184,7 +224,7 @@ namespace EFQMWeb.Controllers
                                 + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
             if (email.SendHtmlEmail(content, "Potvrda registracije", "info@huog.hr", model.Email, null, null) == 0)
             {
-                key = "ID=" + model.Id + "&Type=SuperUser";
+                key = "ID=" + model.Id + "&Type=SUPERUSER";
                 content = "Prijavljeni korisnik:<br/>"
                             + "Email: " + model.Email + " <br/>"
                             + "Ime: " + model.Name + " <br/>"

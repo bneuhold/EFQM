@@ -36,5 +36,41 @@ namespace EFQMWeb.Common.Util
             if (input) return "true";
             else return "false";
         }
+
+        public static int? ParseInt(string input)
+        {
+            try
+            {
+                return int.Parse(input);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static long? ParseLong(string input)
+        {
+            try
+            {
+                return long.Parse(input);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static bool? ParseBool(string input)
+        {
+            try
+            {
+                return bool.Parse(input);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
