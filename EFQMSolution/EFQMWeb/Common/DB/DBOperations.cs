@@ -220,7 +220,8 @@ namespace EFQMWeb.Common.DB
                 Type = data.Rows[0]["Type"].ToString(),
                 Employees = data.Rows[0]["Employees"].ToString(),
                 Income = data.Rows[0]["Income"].ToString(),
-                Newsletter = (bool)data.Rows[0]["Newsletter"]
+                Newsletter = (bool)data.Rows[0]["Newsletter"],
+                Status = (int)data.Rows[0]["Status"],
             };
         }
 
@@ -247,7 +248,8 @@ namespace EFQMWeb.Common.DB
                 Type = data.Rows[0]["Type"].ToString(),
                 Employees = data.Rows[0]["Employees"].ToString(),
                 Income = data.Rows[0]["Income"].ToString(),
-                Newsletter = (bool)data.Rows[0]["Newsletter"]
+                Newsletter = (bool)data.Rows[0]["Newsletter"],
+                Status = (int)data.Rows[0]["Status"],
             };
         }
 

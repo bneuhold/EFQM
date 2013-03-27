@@ -38,13 +38,22 @@ namespace EFQMWeb.Controllers
             PureJson result = new PureJson();
             if (ModelState.IsValid)
             {
-                MySession.CurrentUser = Database.Login(model.Email, model.Password);
-                if (MySession.CurrentUser != null)
+                LoggedUser user = Database.Login(model.Email, model.Password);
+                if (user != null && user.Status > 1)
                 {
+                    MySession.CurrentUser = user;
                     FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
                     using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
                     {
                         jRoot.Add("Status", 0);
+                    }
+                    return new SimpleJsonResult(result);
+                }
+                else if (user != null && user.Status <= 1)
+                {
+                    using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+                    {
+                        jRoot.Add("Status", 2);
                     }
                     return new SimpleJsonResult(result);
                 }
@@ -95,7 +104,7 @@ namespace EFQMWeb.Controllers
                 user = Database.Register(model);
                 if (user != null)
                 {
-                    SendRegistrationMail(model);
+                    int r = SendRegistrationMail(model);
                     //FormsAuthentication.SetAuthCookie(model.Email, false);
                     //MySession.CurrentUser = user;
                     using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
@@ -114,17 +123,44 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Activate(string key)
         {
-            LoggedUser user = ActivateAccount(key, "USER");
+            LoggedUser model = ActivateAccount(key, "USER");
 
-            return View(user);
+            EmailUtil email = new EmailUtil(false);
+            key = "ID=" + model.Id + "&Type=SUPERUSER";
+            string content = "HUOG Prijavljeni korisnik:<br/>"
+                        + "Email: " + model.Email + " <br/>"
+                        + "Ime: " + model.Name + " <br/>"
+                        + "Tvrtka: " + model.CompanyName + " <br/>"
+                        + "Grad: " + model.City + " <br/>"
+                        + "Tip: " + model.Type + " <br/>"
+                        + "Broj Zaposlenih: " + model.Employees + " <br/>"
+                        + "Prihod: " + model.Income + " <br/>"
+                        + "<br /><br />Kako biste ga potvrdili kliknite na sljedeci link: <br/>"
+                        + Url.AbsoluteAction("SuperActivate", "Account", new { key = Encryption64Util.CryptStringUInt64(key) })
+                        + "<br /><br />"
+                        + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
+
+            email.SendHtmlEmail(content, "Potvrda korisničke registracije", "info@huog.hr", MyConfig.GetSetting("EmailConfirmUserReg"), null, null);
+
+            return View(email);
         }
 
         public ActionResult SuperActivate(string key)
         {
 
-            LoggedUser user = ActivateAccount(key, "SUPERUSER");
+            LoggedUser model = ActivateAccount(key, "SUPERUSER");
+            EmailUtil email = new EmailUtil(false);
+            string content = "Aktiviran vam je račun od strane Hrvatske udruge za organizaciju građenja.<br/>"
+                        + "Vaši podaci za prijavu su: <br />"
+                        + "Email: " + model.Email + " <br/>"
+                        + "Zaporka: " + model.Password + " <br/>"
+                        + "<br /><br />Logirati se možete na slijedećem linku: <br/> http://www.huog.hr/PoslovnaIzvrsnost/"
+                        + "<br /><br />"
+                        + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
 
-            return View(user);
+            email.SendHtmlEmail(content, "Potvrda korisničke registracije", "info@huog.hr", model.Email , null, null);
+
+            return View(model);
         }
 
         private LoggedUser ActivateAccount(string key, string UserType)
@@ -133,14 +169,14 @@ namespace EFQMWeb.Controllers
             string type = null;
             string val = Encryption64Util.DecryptStringUInt64(key);
             string[] keys = val.Split(new char[] { '&' });
-            string[] keyValue = keys[0].Split(new char[] { ':' });
+            string[] keyValue = keys[0].Split(new char[] { '=' });
             if (keyValue[0] == "ID")
             {
                 id = Utils.ParseInt(keyValue[1]);
             }
 
-            keyValue = keys[1].Split(new char[] { ':' });
-            if (keyValue[1] == "Type")
+            keyValue = keys[1].Split(new char[] { '=' });
+            if (keyValue[0] == "Type")
             {
                 type = keyValue[1];
             }
@@ -224,28 +260,12 @@ namespace EFQMWeb.Controllers
                                 + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
             if (email.SendHtmlEmail(content, "Potvrda registracije", "info@huog.hr", model.Email, null, null) == 0)
             {
-                key = "ID=" + model.Id + "&Type=SUPERUSER";
-                content = "Prijavljeni korisnik:<br/>"
-                            + "Email: " + model.Email + " <br/>"
-                            + "Ime: " + model.Name + " <br/>"
-                            + "Tvrtka: " + model.CompanyName + " <br/>"
-                            + "Grad: " + model.City + " <br/>"
-                            + "Tip: " + model.Type + " <br/>"
-                            + "Broj Zaposlenih: " + model.Employees + " <br/>"
-                            + "Prihod: " + model.Income + " <br/>"
-                            +"<br /><br />Kako biste ga potvrdili kliknite na sljedeci link: <br/>"
-                            + Url.AbsoluteAction("SuperActivate", "Account", new { key = Encryption64Util.CryptStringUInt64(key) })
-                            + "<br /><br />"
-                            + "Ako ne možete kliknuti na link, akcijom copy-paste kopirajte ga u vaš preglednik." + "<br /><br />";
-
-                email.SendHtmlEmail(content, "Potvrda korisničke registracije", "info@huog.hr", MyConfig.GetSetting("EmailConfirmUserReg"), null, null);
+                return 0;
             }
             else
             {
                 return -1;
             }
-
-            return 0;
         }
 
         #endregion

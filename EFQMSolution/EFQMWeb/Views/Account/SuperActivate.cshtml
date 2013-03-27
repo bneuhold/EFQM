@@ -1,0 +1,12 @@
+﻿@model EFQMWeb.Models.LoggedUser
+           
+@{
+    ViewBag.Title = "SuperActivate";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<h2>Aktivacija korisničkog računa</h2>
+<p>Aktivirali ste korisnika</p>
+<p>E-mail: @Model.Email</p>
+<p>Tvrtka: @Model.CompanyName</p>
+<p>Tip: @Model.Type</p>
