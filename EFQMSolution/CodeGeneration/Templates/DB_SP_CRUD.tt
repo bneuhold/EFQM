@@ -17,7 +17,7 @@
     database.Refresh();	
 	foreach(Table table in database.Tables)
 	{	
-		if(table.Name.Contains("Huog")){
+		if(table.Name.Contains("Huog") || table.Name.Contains("tblSeminar")){
 
 #>		IF  EXISTS (SELECT * FROM sys.objects 
 			WHERE object_id = OBJECT_ID(N'<#=  table.Name #>_insert') AND type in (N'P', N'PC'))

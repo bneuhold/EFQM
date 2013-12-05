@@ -1,0 +1,364 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "Online Registracija";
+    Layout = "~/Views/Shared/_SeminarLayout.cshtml";
+}
+
+@section Scripts{
+    <script language="javascript" type="text/javascript">
+        $(function () {
+
+            var currentOIB = "";
+
+            var isoDateFormat = "yy-mm-dd";
+
+            $.datepicker.regional['hr'] = {
+                closeText: 'Zatvori',
+                prevText: '&#x3c;',
+                nextText: '&#x3e;',
+                currentText: 'Danas',
+                monthNames: ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'],
+                monthNamesShort: ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'],
+                dayNames: ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota'],
+                dayNamesShort: ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'],
+                dayNamesMin: ['Ne', 'Po', 'Ut', 'Sr', 'Če', 'Pe', 'Su'],
+                weekHeader: 'Tje',
+                dateFormat: 'dd.mm.yy.',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+
+            $.datepicker.setDefaults($.datepicker.regional['hr']);
+
+            $(".loader").hide().removeClass("hidden");
+
+            $(".date-field").datepicker(
+                {
+                    changeYear: true
+                }
+            );
+
+            $("#userOIB").blur(function (e) {
+                var v = $(this).val();
+                if (v != currentOIB) {
+                    currentOIB = v;
+                    API.Ajax.PostJson(API.Communication.url + "tecaj/details", { oib: v }, {}, null,
+                    function (ctx, data) {
+                        API.Functions.renderEditData($("#AtendeeInfo"), data.Data);
+                        if (data.Data.dateOfBirth !== null && data.Data.dateOfBirth != '') {
+                            $("#AtendeeInfo #dateOfBirth").val($.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(isoDateFormat, data.Data.dateOfBirth)));
+                        }
+                        $("#firstName").removeClass("warning").focus();
+
+                    }, null, function () {
+                        //$(".loader").hide();
+                    });
+                }
+            });
+
+            $(".button.save").click(function (e) {
+                e.preventDefault();
+                if (validate()) {
+                    saveData();
+                }
+            });
+
+            API.Functions.requiredOnBlur($("#AtendeeInfo"));
+
+            var saveData = function () {
+
+                var data = API.Functions.gatherData($("#AtendeeInfo"));
+                if (data.dateOfBirth !== null && data.dateOfBirth != '') {
+                    data.dateOfBirth = $.datepicker.formatDate(isoDateFormat, $.datepicker.parseDate($.datepicker.regional['hr'].dateFormat, data.dateOfBirth))
+                }
+
+                data.seminarList = $.map($("#SeminarInfo :checked"), function (n) { return $(n).attr("data-id") }).join(",");
+
+                API.Ajax.PostJson(API.Communication.url + "tecaj/save", data, {}, null,
+                    function (ctx, data) {
+                        window.location.href = API.Communication.url + "tecaj/finish";
+                    }, null, function () {
+                        //$(".loader").hide();
+                    });
+            };
+
+            var validate = function () {
+                var result = true;
+                var email = $("#email");
+                var dateOfBirth = $("#dateOfBirth");
+                if (email.val() != '' && !API.Functions.validateEMail(email.val())) {
+                    result = false;
+                    email.addClass("warning");
+                } else {
+                    email.removeClass("warning");
+                }
+
+                var date = dateOfBirth.val();
+                if (date != '' && date.lastIndexOf(".") != date.length) {
+                    date = date + ".";
+                    if (API.Functions.validateDate($.datepicker.regional['hr'].dateFormat, date)) {
+                        dateOfBirth.val(date);
+                    }
+                }
+
+                if (dateOfBirth.val() != '' && !API.Functions.validateDate($.datepicker.regional['hr'].dateFormat, dateOfBirth.val())) {
+                    result = false;
+                    dateOfBirth.addClass("warning");
+                } else {
+                    dateOfBirth.removeClass("warning");
+                }
+
+                if (!API.Functions.checkRequired($("#AtendeeInfo"))) {
+                    result = false;
+                }
+                return result;
+            };
+        });
+    </script>
+    
+}
+
+<div class="centred">
+
+    <div id="AtendeeInfo">
+	    <h2>Registracija polaznika</h2>
+
+	    <div class="form-box">
+
+            <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="userOIB">OIB polaznika:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="userOIB" id="userOIB" class="required" /> <span class="loader hidden">Provjera postojećeg korisnika</span>
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="firstName">Ime:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="firstName" id="firstName" class="required" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="lastName">Prezime:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="lastName" id="lastName" class="required" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="academicDegree">Akademski stupanj:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <select name="academicDegree" id="academicDegree">
+					    <option value=""></option>
+					    <option value="SSS">SSS</option>
+					    <option value="VŠS">VŠS</option>
+					    <option value="VSS">VSS</option>
+					    <option value="Prof.dr.sc">Prof.dr.sc</option>
+					    <option value="Mr.sc">Mr.sc</option>
+					    <option value="Doc.dr.sc">Doc.dr.sc</option>
+					    <option value="Dr.sc">Dr.sc</option>
+				    </select>
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="academicTitle">Akademski stručni naziv:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="academicTitle" id="academicTitle" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="dateOfBirth">Datum rođenja:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="dateOfBirth" id="dateOfBirth" class="date-field" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="placeOfBirth">Mjesto rođenja:</label>
+				    <br />
+				    <span class="desc">(napomena: molimo upisati samo mjesto rođenja, bez bližeg grada, županije itd)</span>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="placeOfBirth" id="placeOfBirth" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="address">Kućna adresa:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="address" id="address" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="ZIP">Poštanski broj:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="ZIP" id="ZIP" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="city">Grad:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="city" id="city" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="email">E-mail adresa:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="email" id="email" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="telephone">Telefon privatni:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="telephone" id="telephone" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="mobile">Mobitel privatni:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="mobile" id="mobile" />
+			    </div>
+		    </div>
+	    </div>
+
+	    <h2>Podaci o tvrtki</h2>
+
+	    <div class="form-box">
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyName">Naziv tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyName" id="companyName" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyPhone">Telefon tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyPhone" id="companyPhone" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyMob">Mobitel tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyMob" id="companyMob" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyFax">Fax tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyFax" id="companyFax" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyAddress">Adresa tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyAddress" id="companyAddress" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyZIP">Poštanski broj:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyZIP" id="companyZIP" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyCity">Grad tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyCity" id="companyCity" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyOIB">OIB tvrtke:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyOIB" id="companyOIB" />
+			    </div>
+		    </div>
+
+		    <div class="form-row">
+			    <div class="cell label-cell">
+				    <label for="companyWorkPosition">Radno mjesto:</label>
+			    </div>
+			    <div class="cell value-cell">
+				    <input type="text" name="companyWorkPosition" id="companyWorkPosition" />
+			    </div>
+		    </div>
+
+	    </div>
+    </div>
+    <div id="SeminarInfo">
+	    <h2>PRIJAVLJUJEM SE ZA POHAĐANJE TEČAJA</h2>
+
+	    <div class="form-box">
+            @foreach (DataRow tecaj in ViewBag.TecajList.Rows)
+            {
+                <div class="row">
+                    <input type="checkbox" data-id="@tecaj["Id"]" class="tecaj-chb" id="@("tecaj_"+tecaj["Id"])" /><label for="@("tecaj_"+tecaj["Id"])">@tecaj["Title"]</label>
+                </div>
+            }
+	    </div>
+    </div>
+    <div class="actions">
+        <button class="button save">Pošalji registraciju</button>
+        <button class="button cancel">Odustani</button>
+    </div>
+
+</div>
+

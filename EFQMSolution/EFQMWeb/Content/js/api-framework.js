@@ -295,6 +295,16 @@ API.Functions.validateEMail = function (sEmail) {
         return true;
 };
 
+API.Functions.validateDate = function (format, input) {
+    try {
+        var date = $.datepicker.parseDate(format, input);
+        if (date.getYear() < 0) return false;
+        else return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 API.Functions.displayError = function (text) {
     var bar = $("#errorStatus");
     if (bar.length > 0) {
@@ -398,7 +408,10 @@ API.Functions.checkRequired = function (ctx) {
     var failCount = 0;
     $(API.Functions.getRequiredFailList(ctx)).each(function () {
         if (($(this).val() == null) || ($(this).val() == "")) {
+            $(this).addClass("warning");
             failCount++;
+        } else {
+            $(this).removeClass("warning");
         }
     });
     if (failCount > 0) {

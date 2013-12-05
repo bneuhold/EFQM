@@ -396,3 +396,46 @@ table.upitnik.table-editor{}
 .upitnik.table-editor td.prosjek.cell{width:50px;}
 .upitnik.table-editor input.input-data{width:30px;text-align:center;}
 
+/*********************** SEMINAR **************************/
+
+.date-field{width:75px;}
+.phone{}
+
+.hidden { display: none; }
+
+.page.seminar { width: 68em; margin-top: 40px; }
+
+.page.seminar h2, .page.seminar h1.title { font-size: 1.4em; text-align: center; text-transform: uppercase; color: #474747; }
+
+.page.seminar .form-box { width: 620px; margin: 0 auto; padding: 3px; border: solid 1px #ccc; }
+
+.page.seminar .form-box .form-row { padding: 5px; }
+
+.page.seminar .form-box .form-row .cell { display: inline-block; vertical-align: baseline; zoom: 1; *display: inline; *vertical-align: auto; }
+
+.page.seminar .form-box .form-row .cell.label-cell { width: 300px; }
+
+.page.seminar .form-box .form-row .cell.value-cell { width: 300px; }
+
+.page.seminar .form-box .row { padding: 5px; }
+
+.page.seminar .form-box .row:nth-child(2n), .page.seminar .form-box .form-row:nth-child(2n) { background-color: #D5E3F4; }
+
+.page.seminar .actions { text-align: center; margin-top: 30px; }
+
+.page.seminar .actions .button { margin: 10px; }
+
+.page.seminar .actions .button.save { background: #3E88E2; }
+
+.page.seminar .registration-finished { font-size: 1.2em; }
+
+.page.seminar .registration-finished h2, .page.seminar .registration-finished h1.title { font-size: 1.6em; }
+
+.page.seminar .registration-finished .info { padding: 10px; }
+
+.page.seminar .registration-finished .info p { margin: 20px 0px; }
+
+.page.seminar input.warning{border-color: #cc0000;background-color: #F5D5D5;}
+
+
+

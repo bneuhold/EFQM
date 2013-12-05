@@ -246,6 +246,155 @@ WHERE
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------
 		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogTecaj_insert') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogTecaj_insert
+		GO
+		
+		CREATE procedure tblHuogTecaj_insert
+			@Id int output
+			, @Title nvarchar(250)
+			, @DateFrom smalldatetime = NULL
+			, @DateTo smalldatetime = NULL
+			, @Active bit
+			, @Description nvarchar(max) = NULL
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		INSERT INTO tblHuogTecaj ( 
+		[Title], [DateFrom], [DateTo], [Active], [Description]) VALUES (@Title, @DateFrom, @DateTo, @Active, @Description) 
+
+		SELECT @Id = SCOPE_IDENTITY(), @ERROR = @@ERROR
+
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+
+
+	
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogTecaj_update') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogTecaj_update
+		GO
+		
+		CREATE procedure tblHuogTecaj_update
+			@Id int
+			, @Title nvarchar(250)
+			, @DateFrom smalldatetime = NULL
+			, @DateTo smalldatetime = NULL
+			, @Active bit
+			, @Description nvarchar(max) = NULL
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		UPDATE tblHuogTecaj SET 
+		Title = @Title
+			, DateFrom = @DateFrom
+			, DateTo = @DateTo
+			, Active = @Active
+			, Description = @Description
+WHERE
+		Id = @Id
+ 
+
+		SET @ERROR = @@ERROR
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogTecajPolaznik_insert') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogTecajPolaznik_insert
+		GO
+		
+		CREATE procedure tblHuogTecajPolaznik_insert
+			@UserId int output
+			@TecajId int output
+			, @DateCreated smalldatetime
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		INSERT INTO tblHuogTecajPolaznik ( 
+		[DateCreated]) VALUES (@DateCreated) 
+
+		SELECT @TecajId = SCOPE_IDENTITY(), @ERROR = @@ERROR
+
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+
+
+	
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblHuogTecajPolaznik_update') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblHuogTecajPolaznik_update
+		GO
+		
+		CREATE procedure tblHuogTecajPolaznik_update
+			@UserId int
+			, @TecajId int
+			, @DateCreated smalldatetime
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		UPDATE tblHuogTecajPolaznik SET 
+		DateCreated = @DateCreated
+WHERE
+		UserId = @UserId
+			 AND TecajId = @TecajId
+ 
+
+		SET @ERROR = @@ERROR
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+		IF  EXISTS (SELECT * FROM sys.objects 
 			WHERE object_id = OBJECT_ID(N'tblHuogUpitnik_insert') AND type in (N'P', N'PC'))
 		DROP PROCEDURE  tblHuogUpitnik_insert
 		GO
@@ -434,6 +583,7 @@ WHERE
 			, @Employees nvarchar(50) = NULL
 			, @Income nvarchar(50) = NULL
 			, @Newsletter bit
+			, @Status int
     
 		as
 
@@ -443,7 +593,7 @@ WHERE
 		BEGIN TRAN
 
 		INSERT INTO tblHuogUser ( 
-		[Name], [Email], [Password], [CompanyName], [City], [Type], [Employees], [Income], [Newsletter]) VALUES (@Name, @Email, @Password, @CompanyName, @City, @Type, @Employees, @Income, @Newsletter) 
+		[Name], [Email], [Password], [CompanyName], [City], [Type], [Employees], [Income], [Newsletter], [Status]) VALUES (@Name, @Email, @Password, @CompanyName, @City, @Type, @Employees, @Income, @Newsletter, @Status) 
 
 		SELECT @Id = SCOPE_IDENTITY(), @ERROR = @@ERROR
 
@@ -475,6 +625,7 @@ WHERE
 			, @Employees nvarchar(50) = NULL
 			, @Income nvarchar(50) = NULL
 			, @Newsletter bit
+			, @Status int
     
 		as
 
@@ -493,8 +644,145 @@ WHERE
 			, Employees = @Employees
 			, Income = @Income
 			, Newsletter = @Newsletter
+			, Status = @Status
 WHERE
 		Id = @Id
+ 
+
+		SET @ERROR = @@ERROR
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblSeminarRegistration_insert') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblSeminarRegistration_insert
+		GO
+		
+		CREATE procedure tblSeminarRegistration_insert
+			@seminarRegistrationID int output
+			, @firstName nvarchar(50)
+			, @lastName nvarchar(50)
+			, @userOIB varchar(11)
+			, @academicTitle nvarchar(250) = NULL
+			, @academicDegree nvarchar(50) = NULL
+			, @dateOfBirth smalldatetime = NULL
+			, @placeOfBirth nvarchar(250) = NULL
+			, @address nvarchar(200) = NULL
+			, @apartment nvarchar(50) = NULL
+			, @city nvarchar(200) = NULL
+			, @ZIP nvarchar(10) = NULL
+			, @email nvarchar(50) = NULL
+			, @mobile nvarchar(50) = NULL
+			, @telephone nvarchar(50) = NULL
+			, @companyName nvarchar(250) = NULL
+			, @companyPhone nvarchar(20) = NULL
+			, @companyMob nvarchar(20) = NULL
+			, @companyFax nvarchar(20) = NULL
+			, @companyAddress nvarchar(250) = NULL
+			, @companyCity nvarchar(250) = NULL
+			, @companyZIP nvarchar(250) = NULL
+			, @companyOIB varchar(11) = NULL
+			, @companyWorkPosition nvarchar(250) = NULL
+			, @userType varchar(2) = NULL
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		INSERT INTO tblSeminarRegistration ( 
+		[firstName], [lastName], [userOIB], [academicTitle], [academicDegree], [dateOfBirth], [placeOfBirth], [address], [apartment], [city], [ZIP], [email], [mobile], [telephone], [companyName], [companyPhone], [companyMob], [companyFax], [companyAddress], [companyCity], [companyZIP], [companyOIB], [companyWorkPosition], [userType]) VALUES (@firstName, @lastName, @userOIB, @academicTitle, @academicDegree, @dateOfBirth, @placeOfBirth, @address, @apartment, @city, @ZIP, @email, @mobile, @telephone, @companyName, @companyPhone, @companyMob, @companyFax, @companyAddress, @companyCity, @companyZIP, @companyOIB, @companyWorkPosition, @userType) 
+
+		SELECT @seminarRegistrationID = SCOPE_IDENTITY(), @ERROR = @@ERROR
+
+		IF @ERROR<>0
+			ROLLBACK TRAN
+		ELSE
+			COMMIT TRAN
+
+		SET NOCOUNT OFF
+        GO
+
+
+
+
+	
+		IF  EXISTS (SELECT * FROM sys.objects 
+			WHERE object_id = OBJECT_ID(N'tblSeminarRegistration_update') AND type in (N'P', N'PC'))
+		DROP PROCEDURE  tblSeminarRegistration_update
+		GO
+		
+		CREATE procedure tblSeminarRegistration_update
+			@seminarRegistrationID int
+			, @firstName nvarchar(50)
+			, @lastName nvarchar(50)
+			, @userOIB varchar(11)
+			, @academicTitle nvarchar(250) = NULL
+			, @academicDegree nvarchar(50) = NULL
+			, @dateOfBirth smalldatetime = NULL
+			, @placeOfBirth nvarchar(250) = NULL
+			, @address nvarchar(200) = NULL
+			, @apartment nvarchar(50) = NULL
+			, @city nvarchar(200) = NULL
+			, @ZIP nvarchar(10) = NULL
+			, @email nvarchar(50) = NULL
+			, @mobile nvarchar(50) = NULL
+			, @telephone nvarchar(50) = NULL
+			, @companyName nvarchar(250) = NULL
+			, @companyPhone nvarchar(20) = NULL
+			, @companyMob nvarchar(20) = NULL
+			, @companyFax nvarchar(20) = NULL
+			, @companyAddress nvarchar(250) = NULL
+			, @companyCity nvarchar(250) = NULL
+			, @companyZIP nvarchar(250) = NULL
+			, @companyOIB varchar(11) = NULL
+			, @companyWorkPosition nvarchar(250) = NULL
+			, @userType varchar(2) = NULL
+    
+		as
+
+		SET NOCOUNT ON
+
+		DECLARE @ERROR INT
+		BEGIN TRAN
+
+		UPDATE tblSeminarRegistration SET 
+		firstName = @firstName
+			, lastName = @lastName
+			, userOIB = @userOIB
+			, academicTitle = @academicTitle
+			, academicDegree = @academicDegree
+			, dateOfBirth = @dateOfBirth
+			, placeOfBirth = @placeOfBirth
+			, address = @address
+			, apartment = @apartment
+			, city = @city
+			, ZIP = @ZIP
+			, email = @email
+			, mobile = @mobile
+			, telephone = @telephone
+			, companyName = @companyName
+			, companyPhone = @companyPhone
+			, companyMob = @companyMob
+			, companyFax = @companyFax
+			, companyAddress = @companyAddress
+			, companyCity = @companyCity
+			, companyZIP = @companyZIP
+			, companyOIB = @companyOIB
+			, companyWorkPosition = @companyWorkPosition
+			, userType = @userType
+WHERE
+		seminarRegistrationID = @seminarRegistrationID
  
 
 		SET @ERROR = @@ERROR

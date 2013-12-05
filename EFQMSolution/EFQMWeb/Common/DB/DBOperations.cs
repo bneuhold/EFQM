@@ -235,5 +235,62 @@ namespace EFQMWeb.Common.DB
             }
             
         }
+
+
+        /**************  SEMINARI **********/
+
+        public DataTable HuogTecajList(DateTime date)
+        {
+            using (DbCommand command = GetCommand("tblHuogTecaj_list"))
+            {
+                return ExecuteDataTable(command);
+            }
+        }
+
+        public DataTable SeminarList(string oib)
+        {
+            using (DbCommand command = GetCommand("tblSeminarRegistration_list"))
+            {
+                SetParameterValue(command, "@userOIB", oib);
+                return ExecuteDataTable(command);
+            }
+        }
+
+        public int SeminarRegistrationSave(SeminarRegistration input)
+        {
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                using (DbCommand command = GetCommand("tblSeminarRegistration_save"))
+                {
+                    SetParameterValue(command, "@userOIB", input.userOIB);
+                    SetParameterValue(command, "@firstName", input.firstName);
+                    SetParameterValue(command, "@lastName", input.lastName);
+                    SetParameterValue(command, "@academicDegree", input.academicDegree);
+                    SetParameterValue(command, "@academicTitle", input.academicTitle);
+                    SetParameterValue(command, "@dateOfBirth", input.dateOfBirth);
+                    SetParameterValue(command, "@placeOfBirth", input.placeOfBirth);
+                    SetParameterValue(command, "@address", input.address);
+                    SetParameterValue(command, "@ZIP", input.ZIP);
+                    SetParameterValue(command, "@city", input.city);
+                    SetParameterValue(command, "@email", input.email);
+                    SetParameterValue(command, "@telephone", input.telephone);
+                    SetParameterValue(command, "@mobile", input.mobile);
+                    SetParameterValue(command, "@companyName", input.companyName);
+                    SetParameterValue(command, "@companyPhone", input.companyPhone);
+                    SetParameterValue(command, "@companyMob", input.companyMob);
+                    SetParameterValue(command, "@companyFax", input.companyFax);
+                    SetParameterValue(command, "@companyAddress", input.companyAddress);
+                    SetParameterValue(command, "@companyZIP", input.companyZIP);
+                    SetParameterValue(command, "@companyCity", input.companyCity);
+                    SetParameterValue(command, "@companyOIB", input.companyOIB);
+                    SetParameterValue(command, "@companyWorkPosition", input.companyWorkPosition);
+                    SetParameterValue(command, "@seminarList", input.seminarList);
+
+                    ExecuteNonQuery(command);
+                }
+                scope.Complete();
+            }
+            return 0;
+        }
     }
 }
