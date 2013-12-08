@@ -2,20 +2,11 @@
 
 @using EFQMWeb.Common.Util;
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    ViewBag.Title= "Poslovna izvrsnost - prijava";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/css/Site.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/css/jquery-ui/jquery-ui.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content("~/Content/js/jquery-1.9.1.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Content/js/jquery-ui-1.10.2.custom.min.js")" type="text/javascript"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script src="@Url.Content("~/Content/js/api-framework.js")?@MyConfig.GetSetting("LinkedFilesVesion")" type="text/javascript"></script>
-    @Html.Partial("JavascriptInjection")
-    
+
+@section Scripts{   
     <script language="javascript" type="text/javascript">
 
         $(function () {
@@ -23,18 +14,28 @@
 
 
             var success = function (ctx, data) {
-                window.location= "@Url.Action("Index","Home")";
+                if(ctx.action=="login"){
+                    window.location= "@Url.Action("Index", "Home")";
+                }else{
+                    alert("Poslan je Vaš zahtjev za registraciju. Potvrdite svoje podatke preko e-maila koji vam je upravo poslan.");
+                }
             };
 
             var error = function (context, jqXHR, textStatus, response) {
                 if(context.action=="login"){
-                    API.Design.fadeMessage.open("Neispravni podaci!");
-                }else if(context.action=="register"){
                     if(response.Status==2){
-                        API.Design.fadeMessage.open("Već postoji korisnik sa istim e-mailom i zaporkom");
+                        API.Design.fadeMessage.open("Vaš korisnički račun još nije aktiviran!", 6);
                     }
                     else{
-                        API.Design.fadeMessage.open("Greška");
+                        API.Design.fadeMessage.open("Neispravni podaci!", 3);
+                    }
+                    
+                }else if(context.action=="register"){
+                    if(response.Status==2){
+                        API.Design.fadeMessage.open("Već postoji korisnik sa istim e-mailom i zaporkom", 3);
+                    }
+                    else{
+                        API.Design.fadeMessage.open("Greška", 3);
                     }
                 }
             };
@@ -73,101 +74,82 @@
         });
 
     </script>
-    
-</head>
-<body class="login-register">
-    <header class="header">
-        <div class="wrapper">
-            <a href="http://www.huog.hr/">
-                <img class="logo" src="@Url.Content("~/Content/img/logo-hr.png")" alt="CROATIAN ASSOCIATION FOR CONTRUCTION MANAGEMENT">
-            </a>
+ }  
 
-            <img src="@Url.Content("~/Content/img/in-logo.png")" alt="in" class="in-logo">
-            <div class="clear"></div>
+<div class="login form-container">
+    <fieldset>
+        <legend>Prijava postojećih korisnika</legend>
+        <div class="row">
+            <span class="label">Email:</span><input type="text" name="Email" id="Email" class="required" />
         </div>
-    </header>
-    <div class="page">
-        <div id="main" class="main">
-            <div class="login form-container">
-                <fieldset>
-                    <legend>Prijava postojećih korisnika</legend>
-                    <div class="row">
-                        <span class="label">Email:</span><input type="text" name="Email" id="Email" class="required" />
-                    </div>
-                    <div class="row">
-                        <span class="label">Zaporka:</span><input type="password" name="Password" id="Password" class="required" />
-                    </div>
-                    <div class="row">
-                        <span class="label">Zapamti me:</span><input type="checkbox" name="RemeberMe" id="RememberMe" />
-                    </div>
-                    <div class="action-bar">
-                        <input type="submit" id="Login" class="button login" value="Prijava"/>
-                    </div>
-                </fieldset>
+        <div class="row">
+            <span class="label">Zaporka:</span><input type="password" name="Password" id="Password" class="required" />
+        </div>
+        <div class="row">
+            <span class="label">Zapamti me:</span><input type="checkbox" name="RemeberMe" id="RememberMe" />
+        </div>
+        <div class="action-bar">
+            <input type="submit" id="Login" class="button login" value="Prijava"/>
+        </div>
+    </fieldset>
                 
-            </div>
+</div>
             
-            <div class="register form-container">
-                <fieldset>
-                    <legend>Registracija novih korisnika</legend>
-                <div class="row">
-                    <span class="label">Email(*):</span><input type="text" name="Email" id="Email" class="required" />
-                </div>
-                <div class="row">
-                    <span class="label">Zaporka(*):</span><input type="password" name="Password" id="Password" class="required" />
-                </div>
-                <div class="row">
-                    <span class="label">Ponovite zaporku(*):</span><input type="password" name="Password2" id="Password2" class="required" />
-                </div>
-                <div class="row">
-                    <span class="label">Naziv firme:</span><input type="text" name="Company" id="Company" />
-                </div>
-                <div class="row">
-                    <span class="label">Grad:</span><input type="text" name="City" id="City" />
-                </div>
-                <div class="row">
-                    <span class="label">Vrsta(*):</span>
-                    <select id="Type" class="required">
-                        <option value="">Odaberite vrstu</option>
-                        <option value="INV">Investitor</option>
-                        <option value="KON">Konzultant</option>
-                        <option value="IZV">Izvođač</option>
-                    </select>
-                </div>
-                <div class="row">
-                    <span class="label">Broj zaposlenih:</span>
-                    <select id="Employee">
-                        <option value="">Odaberite</option>
-                        <option value="0-9">0-9</option>
-                        <option value="10-49">10-49</option>
-                        <option value="50-249">50-249</option>
-                        <option value="250+">250 +</option>
-                    </select>
-                </div>
-                <div class="row">
-                    <span class="label">Prihod:</span>
-                    <select name="Income" id="Income">
-                        <option value="">Odaberite</option>
-                        <option value="10">mikro - do 10 Mio EUR</option>
-                        <option value="50">mala - do 50 Mio EUR</option>
-                        <option value="250">srednja - do 250 Mio EUR</option>
-                        <option value="251">velika - od 250 Mio EUR</option>
-                    </select>
-                </div>
-                <div class="row">
-                    <span class="label">Newsletter:</span><input type="checkbox" name="Newsletter" id="Newsletter" />
-                </div>
-                <div class="action-bar">
-                    <input type="submit" id="Register" class="button register" value="Registracija"/>
-                </div>
-                </fieldset>
-            </div>
-            
-            <div class="clear"></div>
-        </div>
-        <div id="footer">
-        </div>
+<div class="register form-container">
+    <fieldset>
+        <legend>Registracija novih korisnika</legend>
+    <div class="row">
+        <span class="label">Email(*):</span><input type="text" name="Email" id="Email" class="required" />
     </div>
-    @Html.Partial("SharedElements")
-</body>
-</html>
+    <div class="row">
+        <span class="label">Zaporka(*):</span><input type="password" name="Password" id="Password" class="required" />
+    </div>
+    <div class="row">
+        <span class="label">Ponovite zaporku(*):</span><input type="password" name="Password2" id="Password2" class="required" />
+    </div>
+    <div class="row">
+        <span class="label">Naziv firme:</span><input type="text" name="CompanyName" id="CompanyName" />
+    </div>
+    <div class="row">
+        <span class="label">Grad:</span><input type="text" name="City" id="City" />
+    </div>
+    <div class="row">
+        <span class="label">Vrsta(*):</span>
+        <select id="Type" class="required">
+            <option value="">Odaberite vrstu</option>
+            <option value="IN">Investitor</option>
+            <option value="KO">Konzultant</option>
+            <option value="IZ">Izvođač</option>
+        </select>
+    </div>
+    <div class="row">
+        <span class="label">Broj zaposlenih:</span>
+        <select id="Employees">
+            <option value="">Odaberite</option>
+            <option value="0-9">0-9</option>
+            <option value="10-49">10-49</option>
+            <option value="50-249">50-249</option>
+            <option value="250+">250 +</option>
+        </select>
+    </div>
+    <div class="row">
+        <span class="label">Prihod:</span>
+        <select name="Income" id="Income">
+            <option value="">Odaberite</option>
+            <option value="10">mikro - do 10 Mio EUR</option>
+            <option value="50">mala - do 50 Mio EUR</option>
+            <option value="250">srednja - do 250 Mio EUR</option>
+            <option value="251">velika - od 250 Mio EUR</option>
+        </select>
+    </div>
+    <div class="row">
+        <span class="label">Newsletter:</span><input type="checkbox" name="Newsletter" id="Newsletter" />
+    </div>
+    <div class="action-bar">
+        <input type="submit" id="Register" class="button register" value="Registracija"/>
+    </div>
+    </fieldset>
+</div>
+            
+<div class="clear"></div>
+

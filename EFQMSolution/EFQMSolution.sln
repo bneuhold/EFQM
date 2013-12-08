@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.DataAccess", "Libra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGeneration\CodeGeneration.csproj", "{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRI.Tools", "MRI.Tools\MRI.Tools.csproj", "{58B11362-2598-469F-8266-B36A64E9D309}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EE9ADDE-7B23-4A0C-9298-862F827BC4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B11362-2598-469F-8266-B36A64E9D309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B11362-2598-469F-8266-B36A64E9D309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B11362-2598-469F-8266-B36A64E9D309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B11362-2598-469F-8266-B36A64E9D309}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

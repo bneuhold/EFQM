@@ -58,6 +58,7 @@ namespace EFQMWeb.Models
         public string City { get; set; }
         public string Employees { get; set; }
         public string Income { get; set; }
+        public int Status { get; set; }
         public bool Newsletter { get; set; }
     }
 }

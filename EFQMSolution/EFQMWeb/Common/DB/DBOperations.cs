@@ -220,7 +220,36 @@ namespace EFQMWeb.Common.DB
                 Type = data.Rows[0]["Type"].ToString(),
                 Employees = data.Rows[0]["Employees"].ToString(),
                 Income = data.Rows[0]["Income"].ToString(),
-                Newsletter = (bool)data.Rows[0]["Newsletter"]
+                Newsletter = (bool)data.Rows[0]["Newsletter"],
+                Status = (int)data.Rows[0]["Status"],
+            };
+        }
+
+        public LoggedUser ActivateUser(int id, string type)
+        {
+            DataTable data;
+            using (DbCommand command = GetCommand("tblHuogUser_Activate"))
+            {
+                SetParameterValue(command, "@Id", id);
+                SetParameterValue(command, "@Type", type);
+                data = ExecuteDataTable(command);
+            }
+            if (data.Rows.Count == 0)
+                return null;
+
+            return new LoggedUser()
+            {
+                Id = (int)data.Rows[0]["Id"],
+                Name = data.Rows[0]["Name"].ToString(),
+                Email = data.Rows[0]["Email"].ToString(),
+                Password = data.Rows[0]["Password"].ToString(),
+                CompanyName = data.Rows[0]["CompanyName"].ToString(),
+                City = data.Rows[0]["City"].ToString(),
+                Type = data.Rows[0]["Type"].ToString(),
+                Employees = data.Rows[0]["Employees"].ToString(),
+                Income = data.Rows[0]["Income"].ToString(),
+                Newsletter = (bool)data.Rows[0]["Newsletter"],
+                Status = (int)data.Rows[0]["Status"],
             };
         }
 
