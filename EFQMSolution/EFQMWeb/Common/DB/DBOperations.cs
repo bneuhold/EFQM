@@ -276,12 +276,62 @@ namespace EFQMWeb.Common.DB
             }
         }
 
+        public int? SeminarSave(Seminar input)
+        {
+            string com = input.SeminarId.HasValue ? "tblHuogTecaj_update" : "tblHuogTecaj_insert";
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                using (DbCommand command = GetCommand(com))
+                {
+                    SetParameterValue(command, "@Title", input.Title);
+                    SetParameterValue(command, "@DateFrom", input.DateFrom);
+                    SetParameterValue(command, "@DateTo", input.DateTo);
+                    SetParameterValue(command, "@Active", input.Active);
+                    SetParameterValue(command, "@Description", input.Description);
+                    if (input.SeminarId.HasValue)
+                    {
+                        SetParameterValue(command, "@Id", input.SeminarId.Value);
+                    }
+                    else
+                    {
+                        GetParameter(command, "@Id").Direction = ParameterDirection.Output;
+                    }
+
+                    ExecuteNonQuery(command);
+
+                    if (!input.SeminarId.HasValue)
+                    {
+                        input.SeminarId = (int)GetParameterValue(command, "Id");
+                    }
+                    
+                }
+                scope.Complete();
+            }
+            return input.SeminarId;
+
+        }
+
         public DataTable SeminarList(string oib)
         {
             using (DbCommand command = GetCommand("tblSeminarRegistration_list"))
             {
                 SetParameterValue(command, "@userOIB", oib);
                 return ExecuteDataTable(command);
+            }
+        }
+
+        public DataTable SeminarRegistrationSearch(int? SeminarId, string DateFrom, string DateTo)
+        {
+            using (DbCommand command = GetCommand("tblSeminarRegistration_search"))
+            {
+                SetParameterValue(command, "@SeminarId", SeminarId);
+                if (!string.IsNullOrEmpty(DateFrom))
+                    SetParameterValue(command, "@DateFrom", DateFrom);
+                if (!string.IsNullOrEmpty(DateTo))
+                    SetParameterValue(command, "@DateTo", DateTo);
+
+                return ExecuteDataTable(command);
+                
             }
         }
 

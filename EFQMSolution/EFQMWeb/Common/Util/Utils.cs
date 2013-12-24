@@ -72,5 +72,33 @@ namespace EFQMWeb.Common.Util
                 return null;
             }
         }
+
+        public static string ToDateString(object input)
+        {
+            if (!IsNull(input))
+            {
+                DateTime dt = (DateTime)input;
+                return dt.ToShortDateString();
+            }
+            return string.Empty;
+        }
+
+        public static string ToISODateString(object input)
+        {
+            if (!IsNull(input))
+            {
+                DateTime dt = (DateTime)input;
+                return dt.ToString("yyyy-MM-dd");
+            }
+            return string.Empty;
+        }
+
+        public static string  CssActive(bool input){
+            if (input)
+                return "active";
+            else
+                return "inactive";
+
+        }
     }
 }

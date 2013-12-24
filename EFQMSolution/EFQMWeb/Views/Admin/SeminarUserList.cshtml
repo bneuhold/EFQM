@@ -1,0 +1,123 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "SeminarUserList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script type="text/javascript" language="javascript">
+        $(function () {
+
+            API.Design.datepicker.init();
+            var editor = $("#SeminarDetails");
+            var listTmpl = $("#SeminarTmpl");
+            var listTable = $("#SeminalTable");
+
+            var listSeminar = function (e) {
+                var container = $("tbody", listTable);
+                var param = API.Functions.gatherData($("#Filter"));
+                if (param.DateFrom !== null && param.DateFrom != '') {
+                    param.DateFrom = $.datepicker.formatDate(API.Design.datepicker.isoDateFormat, $.datepicker.parseDate($.datepicker.regional['hr'].dateFormat, param.DateFrom));
+                }
+                if (param.DateTo !== null && param.DateTo != '') {
+                    param.DateTo = $.datepicker.formatDate(API.Design.datepicker.isoDateFormat, $.datepicker.parseDate($.datepicker.regional['hr'].dateFormat, param.DateTo));
+                }
+                API.Ajax.PostJson(API.Communication.url + "admin/SeminarUserList", param, {}, null,
+                    function (ctx, data) {
+                        container.html("");
+                        $(data.List).each(function (n, i) {
+                            var item = this;
+                            if (item.dateOfBirth !== null && item.dateOfBirth != '') {
+                                item.dateOfBirth = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, item.dateOfBirth));
+                            }
+                            if (item.dateCreated !== null && item.dateCreated != '') {
+                                item.dateCreated = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, item.dateCreated));
+                            }
+                            container.append(listTmpl.tmpl(item));
+                        });
+
+                    }, null, function () {
+                        //$(".loader").hide();
+                    });
+            };
+
+            var showDetails = function (e) {
+
+
+            };
+
+            $("#Filter .refresh").click(listSeminar);
+            $(".datatable .view-icon.action").click(showDetails);
+
+        });
+    
+    
+    </script>
+    <script id="SeminarTmpl" type="javascript/tmpl">
+        <tr>
+            <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
+            <td>${firstName} ${lastName}</td>
+            <td>${email}</td>
+            <td>${address}, ${ZIP} ${city}</td>
+            <td>${mobile}</td>
+            <td>${companyName}</td>
+            <td>${dateCreated}</td>
+        </tr>
+    </script>
+    <script id="SeminarDetailsTmpl" type="javascript/tmpl">
+        <tr>
+            <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
+            <td>${Title}</td>
+            <td>${DateFrom}</td>
+            <td>${DateTo}</td>
+            <td><span class="active-icon ${ActiveClass}"></span></td>
+            
+        </tr>
+    </script>
+}
+
+<h2>Pretraga prijava za seminar</h2>
+
+<div class="filter-wrapper">
+    <ul id="Filter" class="filter">
+        <li>
+            <label for="SeminarId">Seminar:</label>
+            <select id="SeminarId">
+                <option value="">Svi seminari</option>
+                @foreach (DataRow row in ViewBag.TecajList.Rows)
+                {
+                    <option value="@row["Id"]">@row["Title"]</option>    
+                }
+            </select>
+        </li>
+        <li>
+            <label for="SeminarId">Datum od:</label>
+            <input type="text" id="DateFrom" class="date-field"/>
+        </li>
+        <li>
+            <label for="SeminarId">Datum do:</label>
+            <input type="text" id="DateTo" class="date-field"/>
+        </li>
+        <li>
+            <span class="button refresh">Osvježi</span>
+        </li>
+    </ul>
+</div>
+<div class="table-wrapper">
+    <table id="SeminalTable" class="datatable">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Ime i prezime</th>
+                <th>E-mail</th>
+                <th>Adresa</th>
+                <th>Mobitel</th>
+                <th>Tvrtka</th>
+                <th>Prijava</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,151 @@
+﻿@using System.Data;
+@using EFQMWeb.Common.Util;
+@{
+    ViewBag.Title = "Lista seminara";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Scripts{
+    <script type="text/javascript" language="javascript">
+        $(function () {
+
+            API.Design.datepicker.init();
+            var editor = $("#SeminarEditor");
+
+            var loadSeminar = function (e) {
+                var id = $(this).attr("tecajid");
+                API.Ajax.PostJson(API.Communication.url + "admin/seminardetails", { id: id }, {}, null,
+                    function (ctx, data) {
+                        API.Functions.renderEditData(editor, data.Data);
+                        if (data.Data.DateFrom !== null && data.Data.DateFrom != '') {
+                            $("#DateFrom", editor).val($.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateFrom)));
+                        }
+                        if (data.Data.DateTo !== null && data.Data.DateTo != '') {
+                            $("#DateTo", editor).val($.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateTo)));
+                        }
+                        editor.dialog("open");
+
+                    }, null, function () {
+                        //$(".loader").hide();
+                    });
+            };
+
+            var saveSeminar = function (e) {
+                var param = API.Functions.gatherData(editor);
+
+                if (param.DateFrom !== null && param.DateFrom != '') {
+                    param.DateFrom = $.datepicker.formatDate(API.Design.datepicker.isoDateFormat, $.datepicker.parseDate($.datepicker.regional['hr'].dateFormat, param.DateFrom))
+                }
+                if (param.DateTo !== null && param.DateTo != '') {
+                    param.DateTo = $.datepicker.formatDate(API.Design.datepicker.isoDateFormat, $.datepicker.parseDate($.datepicker.regional['hr'].dateFormat, param.DateTo))
+                }
+                API.Ajax.PostJson(API.Communication.url + "admin/seminarsave", param, {}, null,
+                    function (ctx, data) {
+                        editor.dialog("close");
+                        alert("Seminar spremljen");
+
+                        if (param.SeminarId === undefined || param.SeminarId === null || param.SeminarId =="") {
+                            if (data.Data.DateFrom !== null && data.Data.DateFrom != '') {
+                                data.Data.DateFrom = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateFrom));
+                            }
+                            if (data.Data.DateTo !== null && data.Data.DateTo != '') {
+                                data.Data.DateTo = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateTo));
+                            }
+
+                            var chunk = $("#SeminarTmpl").tmpl(data.Data);
+                            $(".edit-icon.action", chunk).click(loadSeminar);
+                            $("#SeminarTable tbody").append(chunk);
+                        }
+                    }, null, function () {
+
+
+                    });
+            }
+
+
+            $(".datatable .edit-icon.action").click(loadSeminar);
+
+            $(".button.save", editor).click(saveSeminar);
+
+            $(".button.cancel", editor).click(function (e) { editor.dialog("close"); });
+
+            $("#AddSeminar").click(function (e) {
+                $("input,textarea", editor).val("");
+                $("#Active", editor).prop("checked", true);
+                editor.dialog("open");
+            });
+
+        });
+    
+    
+    </script>
+    <script id="SeminarTmpl" type="javascript/tmpl">
+        <tr>
+            <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
+            <td>${Title}</td>
+            <td>${DateFrom}</td>
+            <td>${DateTo}</td>
+            <td><span class="active-icon ${ActiveClass}"></span></td>
+        </tr>
+    </script>
+}
+
+<h2>SeminarList</h2>
+
+<div id="SeminarTable" class="datatable">
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Naziv seminara</th>
+            <th>Datum početka</th>
+            <th>Datum kraja</th>
+            <th>Aktivan</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (DataRow tecaj in ViewBag.TecajList.Rows)
+        {
+            <tr>
+                <td><span class="edit-icon action" tecajid="@tecaj["Id"]"></span></td>
+                <td>@tecaj["Title"]</td>
+                <td>@Utils.ToDateString(tecaj["DateFrom"])</td>
+                <td>@Utils.ToDateString(tecaj["DateTo"])</td>
+                <td><span class="active-icon @Utils.CssActive((bool)tecaj["Active"])"></span></td>
+            </tr>
+        }    
+    </tbody>
+</table>
+<span id="AddSeminar" class="button add">Novi seminar</span>
+
+<div id="SeminarEditor" title="Podaci za seminar" class="modal" useWidth="true">
+    <input type="hidden" id="SeminarId" />
+    <div class="editor">
+        <div class="editor-row">
+            <div class="editor-cell label">Naziv seminara</div>
+            <div class="editor-cell value"><input type="text" id="Title" /></div>
+        </div>
+        <div class="editor-row">
+            <div class="editor-cell label">Datum početka</div>
+            <div class="editor-cell value"><input type="text" id="DateFrom" class="date-field" /></div>
+        </div>
+        <div class="editor-row">
+            <div class="editor-cell label">Datum kraja</div>
+            <div class="editor-cell value"><input type="text" id="DateTo" class="date-field" /></div>
+        </div>
+        <div class="editor-row">
+            <div class="editor-cell label">Aktivan</div>
+            <div class="editor-cell value"><input type="checkbox" id="Active" checked="checked" /></div>
+        </div>
+        <div class="editor-row">
+            <div class="editor-cell label">Opis</div>
+            <div class="editor-cell value"><textarea id="Description"></textarea></div>
+        </div>
+        <div class="action-row">
+            <span class="button save">Spremi</span>
+            <span class="button cancel">Odustani</span>
+        </div>
+    </div>
+</div>
+    
+</div>

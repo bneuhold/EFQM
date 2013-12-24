@@ -233,4 +233,34 @@ namespace EFQMWeb.Common.Base
             
         }
     }
+
+    public class AdminAccess : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (MySession.CurrentUser == null)
+            {
+                FormsAuthentication.SignOut();
+                RouteValueDictionary redirectTargetDictionary = new RouteValueDictionary();
+                redirectTargetDictionary.Add("action", "Index");
+                redirectTargetDictionary.Add("controller", "Account");
+
+                filterContext.Result = new RedirectToRouteResult(redirectTargetDictionary);
+            }
+            else if (MySession.CurrentUser.Type!="AD")
+            {
+                RouteValueDictionary redirectTargetDictionary = new RouteValueDictionary();
+                redirectTargetDictionary.Add("action", "NoAccess");
+                redirectTargetDictionary.Add("controller", "Home");
+
+                filterContext.Result = new RedirectToRouteResult(redirectTargetDictionary);
+
+            }else
+            {
+
+                base.OnActionExecuting(filterContext);
+            }
+        }
+
+    }
 }

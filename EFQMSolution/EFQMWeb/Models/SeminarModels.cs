@@ -31,4 +31,14 @@ namespace EFQMWeb.Models
         public string companyWorkPosition { get; set; }
         public string seminarList { get; set; }
     }
+
+    public class Seminar
+    {
+        public int? SeminarId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool Active { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+    }
 }

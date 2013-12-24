@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Administratorske stranice</h2>
+
+<ul id="AdminMenu">
+    <li>@Html.ActionLink("Lista seminara", "SeminarList", "Admin")</li>
+    <li>@Html.ActionLink("Lista prijavljenih korisnika", "SeminarUserList", "Admin")</li>
+</ul>

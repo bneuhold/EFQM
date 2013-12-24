@@ -438,4 +438,18 @@ table.upitnik.table-editor{}
 .page.seminar input.warning{border-color: #cc0000;background-color: #F5D5D5;}
 
 
+#SeminarEditor{width:600px;}
+#SeminarEditor #Title{width:500px;}
+#SeminarEditor #Description{width:500px;}
+.edit-icon.action{display:block;width:20px;height:20px;border:solid 1px #999;opacity:0.8;cursor:pointer;}
+.edit-icon.action:hover{border:solid 1px #666;opacity:1.0;}
+.editor .action-row{text-align:center;}
+
+.filter-wrapper{}
+.filter-wrapper ul.filter{padding:0;}
+.filter-wrapper ul.filter li{display:inline-block;}
+.filter-wrapper ul.filter li label{width:75px;display:inline-block;padding-right:10px;text-align:right;}
+.filter-wrapper ul.filter #SeminarId{max-width:300px}
+
+
 
