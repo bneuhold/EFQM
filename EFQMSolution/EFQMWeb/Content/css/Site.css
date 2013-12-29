@@ -398,7 +398,11 @@ table.upitnik.table-editor{}
 
 /*********************** SEMINAR **************************/
 
-.date-field{width:75px;}
+.date-field{width:85px !important;}
+
+.active-icon{display:block;width:16px;height:16px;background:url(../img/inactive.png) 0 50% no-repeat;}
+.active-icon.active{background:url(../img/active.png) 0 50% no-repeat;}
+
 .phone{}
 
 .hidden { display: none; }
@@ -441,8 +445,10 @@ table.upitnik.table-editor{}
 #SeminarEditor{width:600px;}
 #SeminarEditor #Title{width:500px;}
 #SeminarEditor #Description{width:500px;}
-.edit-icon.action{display:block;width:20px;height:20px;border:solid 1px #999;opacity:0.8;cursor:pointer;}
-.edit-icon.action:hover{border:solid 1px #666;opacity:1.0;}
+.edit-icon.action, .view-icon.action{display:block;width:20px;height:20px;border:solid 1px #999;opacity:0.8;cursor:pointer;}
+.edit-icon.action:hover, .view-icon.action:hover{border:solid 1px #666;opacity:1.0;}
+.edit-icon.action{background:url(../img/edit.png) 50% 50% no-repeat;}
+.view-icon.action{background:url(../img/view.png) 50% 50% no-repeat;}
 .editor .action-row{text-align:center;}
 
 .filter-wrapper{}
@@ -450,6 +456,17 @@ table.upitnik.table-editor{}
 .filter-wrapper ul.filter li{display:inline-block;}
 .filter-wrapper ul.filter li label{width:75px;display:inline-block;padding-right:10px;text-align:right;}
 .filter-wrapper ul.filter #SeminarId{max-width:300px}
+
+#SeminarRegistrationDetailsModal{width:900px;background:#fff;color:#333;}
+#SeminarRegistrationDetailsModal .form-box { width: 405px; margin: 0 20px 0 0; float:left; }
+#SeminarRegistrationDetailsModal .form-box .form-row { padding: 5px; border-top:solid 1px #ccc;}
+#SeminarRegistrationDetailsModal .form-box .form-row .cell { display: inline-block; vertical-align: baseline; zoom: 1; *display: inline; *vertical-align: auto; }
+#SeminarRegistrationDetailsModal .form-box .form-row .cell.label-cell { width: 180px;font-weight:bold }
+#SeminarRegistrationDetailsModal .form-box .form-row .cell.value-cell { width: 180px; }
+#SeminarRegistrationDetailsModal .form-box.company .cell.label-cell { width: 150px;font-weight:bold }
+#SeminarRegistrationDetailsModal .form-box.company .cell.value-cell { width: 210px;}
+
+
 
 
 

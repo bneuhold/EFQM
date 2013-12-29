@@ -1,5 +1,4 @@
 ﻿@using EFQMWeb.Common.Util;
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,20 +11,13 @@
     <script src="@Url.Content("~/Content/js/jquery.tmpl.min.js")?@MyConfig.GetSetting("LinkedFilesVesion")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/js/api-framework.js")?@MyConfig.GetSetting("LinkedFilesVesion")" type="text/javascript"></script>
     @Html.Partial("JavascriptInjection")
-    
-    <script language="javascript" type="text/javascript">
-        $(function () {
-
-        });
-
-    </script>
-    @if (IsSectionDefined("Scripts"))
+@if (IsSectionDefined("Scripts"))
     {
         @RenderSection("Scripts")
     }
     
 </head>
-<body class="login-register">
+<body>
     <header class="header">
         <div class="wrapper">
             <a href="http://www.huog.hr/">
@@ -33,11 +25,30 @@
             </a>
 
             <img src="@Url.Content("~/Content/img/in-logo.png")" alt="in" class="in-logo">
+            <div class="header-right">
+                <div id="logindisplay">
+                    @Html.Partial("_LogOnPartial")
+                </div>
+            </div>
             <div class="clear"></div>
         </div>
     </header>
+    <div class="menu-wrapper">
+        <div id="menucontainer" class="page">
+            <ul id="menu">
+                @if(MySession.CurrentUser.Type=="AD"){
+                    <li>@Html.ActionLink("Admin stranice", "Index", "Admin")</li>   
+                }
+            </ul>
+        </div>
+    </div>
     <div class="page">
-        <div id="main" class="main">
+        
+        <div id="">
+            
+            
+        </div>
+        <div id="main">
             @RenderBody()
         </div>
         <div id="footer">

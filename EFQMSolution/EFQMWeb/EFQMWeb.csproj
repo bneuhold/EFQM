@@ -156,12 +156,16 @@
     <Content Include="Content\css\jquery-ui\images\ui-icons_999999_256x240.png" />
     <Content Include="Content\css\jquery-ui\images\ui-icons_fbc856_256x240.png" />
     <Content Include="Content\css\jquery-ui\jquery-ui.css" />
+    <Content Include="Content\img\active.png" />
+    <Content Include="Content\img\edit.png" />
     <Content Include="Content\img\in-logo.png" />
+    <Content Include="Content\img\inactive.png" />
     <Content Include="Content\img\logo-en.png" />
     <Content Include="Content\img\logo-hr.png" />
     <Content Include="Content\img\search-button.png" />
     <Content Include="Content\img\title-en.png" />
     <Content Include="Content\img\title-hr.png" />
+    <Content Include="Content\img\view.png" />
     <Content Include="Content\js\api-framework.js" />
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\js\jquery-ui-1.10.2.custom.min.js" />

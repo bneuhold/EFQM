@@ -42,20 +42,31 @@
                 API.Ajax.PostJson(API.Communication.url + "admin/seminarsave", param, {}, null,
                     function (ctx, data) {
                         editor.dialog("close");
-                        alert("Seminar spremljen");
 
-                        if (param.SeminarId === undefined || param.SeminarId === null || param.SeminarId =="") {
-                            if (data.Data.DateFrom !== null && data.Data.DateFrom != '') {
-                                data.Data.DateFrom = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateFrom));
-                            }
-                            if (data.Data.DateTo !== null && data.Data.DateTo != '') {
-                                data.Data.DateTo = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateTo));
-                            }
-
-                            var chunk = $("#SeminarTmpl").tmpl(data.Data);
-                            $(".edit-icon.action", chunk).click(loadSeminar);
-                            $("#SeminarTable tbody").append(chunk);
+                        if (data.Data.Active === true) {
+                            data.Data.ActiveClass = "active";
+                        } else {
+                            data.Data.ActiveClass = "inactive";
                         }
+
+                        if (data.Data.DateFrom !== null && data.Data.DateFrom != '') {
+                            data.Data.DateFrom = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateFrom));
+                        }
+                        if (data.Data.DateTo !== null && data.Data.DateTo != '') {
+                            data.Data.DateTo = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.DateTo));
+                        }
+
+                        var chunk = $("#SeminarTmpl").tmpl(data.Data);
+                        $(".edit-icon.action", chunk).click(loadSeminar);
+
+                        if (param.SeminarId === undefined || param.SeminarId === null || param.SeminarId == "") {
+                            $("#SeminarTable tbody").append(chunk);
+                        } else {
+                            var row = $("#SeminarTable tbody tr[tecajid=" + param.SeminarId + "]");
+                            row.after(chunk).remove();
+                        }
+
+                        alert("Seminar spremljen");
                     }, null, function () {
 
 
@@ -80,7 +91,7 @@
     
     </script>
     <script id="SeminarTmpl" type="javascript/tmpl">
-        <tr>
+        <tr tecajid="${SeminarId}">
             <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
             <td>${Title}</td>
             <td>${DateFrom}</td>
@@ -106,7 +117,7 @@
     <tbody>
     @foreach (DataRow tecaj in ViewBag.TecajList.Rows)
         {
-            <tr>
+            <tr tecajid="@tecaj["Id"]">
                 <td><span class="edit-icon action" tecajid="@tecaj["Id"]"></span></td>
                 <td>@tecaj["Title"]</td>
                 <td>@Utils.ToDateString(tecaj["DateFrom"])</td>

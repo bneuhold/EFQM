@@ -1,7 +1,7 @@
 ﻿@using System.Data;
 @{
     ViewBag.Title = "SeminarUserList";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @section Scripts{
@@ -27,6 +27,11 @@
                         container.html("");
                         $(data.List).each(function (n, i) {
                             var item = this;
+                            if (item.Active === true) {
+                                item.ActiveClass = "active";
+                            } else {
+                                item.ActiveClass = "inactive";
+                            }
                             if (item.dateOfBirth !== null && item.dateOfBirth != '') {
                                 item.dateOfBirth = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, item.dateOfBirth));
                             }
@@ -36,13 +41,29 @@
                             container.append(listTmpl.tmpl(item));
                         });
 
+                        $(".view-icon.action",container).click(showDetails);
+
                     }, null, function () {
                         //$(".loader").hide();
                     });
             };
 
             var showDetails = function (e) {
+                var userOIB = $(this).attr("userOIB");
+                API.Ajax.PostJson(API.Communication.url + "admin/seminaruserdetails", { oib: userOIB }, {}, null,
+                    function (ctx, data) {
 
+                        if (data.Data.dateOfBirth !== null && data.Data.dateOfBirth != '') {
+                            data.Data.dateOfBirth = $.datepicker.formatDate($.datepicker.regional['hr'].dateFormat, $.datepicker.parseDate(API.Design.datepicker.isoDateFormat, data.Data.dateOfBirth));
+                        }
+
+                        var chunk = $("#SeminarDetailsTmpl").tmpl(data.Data);
+                        $("#SeminarRegistrationDetailsModal").html(chunk).dialog("open");
+
+
+                    }, null, function () {
+                        //$(".loader").hide();
+                    });
 
             };
 
@@ -55,7 +76,7 @@
     </script>
     <script id="SeminarTmpl" type="javascript/tmpl">
         <tr>
-            <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
+            <td><span class="view-icon action" userOIB="${userOIB}"></span></td>
             <td>${firstName} ${lastName}</td>
             <td>${email}</td>
             <td>${address}, ${ZIP} ${city}</td>
@@ -64,7 +85,7 @@
             <td>${dateCreated}</td>
         </tr>
     </script>
-    <script id="SeminarDetailsTmpl" type="javascript/tmpl">
+    <script id="SeminarDetailsTmpl1" type="javascript/tmpl">
         <tr>
             <td><span class="edit-icon action" tecajid="${SeminarId}"></span></td>
             <td>${Title}</td>
@@ -73,6 +94,216 @@
             <td><span class="active-icon ${ActiveClass}"></span></td>
             
         </tr>
+    </script>
+
+    <script id="SeminarDetailsTmpl" type="javascript/tmpl">
+        <div>
+	        <div class="form-box personal">
+		        <h2>Osobni podaci</h2>
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="userOIB">OIB polaznika:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${userOIB}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="firstName">Ime:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${firstName}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="lastName">Prezime:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${lastName}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="academicDegree">Akademski stupanj:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${academicDegree}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="academicTitle">Akademski stručni naziv:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${academicTitle}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="dateOfBirth">Datum rođenja:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${dateOfBirth}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="placeOfBirth">Mjesto rođenja:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${placeOfBirth}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="address">Kućna adresa:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${address}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="ZIP">Poštanski broj:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${ZIP}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="city">Grad:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${city}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="email">E-mail adresa:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${email}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="telephone">Telefon privatni:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${telephone}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="mobile">Mobitel privatni:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${mobile}
+			        </div>
+		        </div>
+	        </div>
+	        <div class="form-box company">
+		        <h2>Podaci o tvrtki</h2>
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyName">Naziv tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyName}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyPhone">Telefon tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyPhone}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyMob">Mobitel tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyMob}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyFax">Fax tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyFax}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyAddress">Adresa tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyAddress}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyZIP">Poštanski broj:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyZIP}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyCity">Grad tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyCity}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyOIB">OIB tvrtke:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyOIB}
+			        </div>
+		        </div>
+
+		        <div class="form-row">
+			        <div class="cell label-cell">
+				        <label for="companyWorkPosition">Radno mjesto:</label>
+			        </div>
+			        <div class="cell value-cell">
+				        ${companyWorkPosition}
+			        </div>
+		        </div>
+
+	        </div>
+        </div>
+        <div class="clear"></div>
+    
     </script>
 }
 
@@ -121,3 +352,5 @@
         </tbody>
     </table>
 </div>
+
+<div id="SeminarRegistrationDetailsModal" class="modal" useWidth="true"></div>

@@ -128,6 +128,40 @@ namespace EFQMWeb.Controllers
             return new SimpleJsonResult(result);
         }
 
+        [HttpPost]
+        public ActionResult SeminarUserDetails(string oib)
+        {
+            if (string.IsNullOrEmpty(oib)) oib = null;
+            DataTable table = Database.SeminarList(oib);
+            PureJson result = new PureJson();
+            if (table.Rows.Count == 0)
+            {
+                return new SimpleJsonResult();
+            }
+
+            using (SPJsonObject jRoot = new SPJsonObject(new JsonKeyValueWriter(result.StringBuilder)))
+            {
+                jRoot.Add("Status", 0);
+                using (SPJsonObject jO = new SPJsonObject(jRoot.GetWriter, "Data"))
+                {
+                    DataRow last = table.Rows[table.Rows.Count - 1];
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        if (column.ColumnName == "dateOfBirth" && !Utils.IsNull(last[column.ColumnName]))
+                        {
+                            DateTime born = (DateTime)last[column.ColumnName];
+                            jRoot.Add(column.ColumnName, born.ToString("yyyy-MM-dd"));
+                        }
+                        else
+                        {
+                            jRoot.Add(column.ColumnName, last[column.ColumnName]);
+                        }
+                    }
+                }
+            }
+            return new SimpleJsonResult(result);
+        }
+
         //
         // GET: /Admin/Create
 
