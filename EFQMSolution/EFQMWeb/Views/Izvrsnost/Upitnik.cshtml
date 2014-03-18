@@ -116,15 +116,15 @@
                 <td class="naziv left grouped">@row["Naziv"]</td>
                 <td grupaId="@row["GrupaId"]" oznaka="@row["Oznaka"]" class="prosjek average grouped"></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
+                <td class="input-value cell" title="Pouzdan"><input title="Pouzdan" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
+                <td class="input-value cell last" title="Integriran"><input title="Integriran" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
+                <td class="input-value cell" title="Implementirano"><input title="Implementirano" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
+                <td class="input-value cell last" title="Sustavno"><input title="Sustavno" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="6" id="@(row["Oznaka"] + "-6")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="7" id="@(row["Oznaka"] + "-7")" class="input-data" /></td>
+                <td class="input-value cell" title="Mjerenje"><input title="Mjerenje" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
+                <td class="input-value cell" title="Učenje"><input title="Učenje" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="6" id="@(row["Oznaka"] + "-6")" class="input-data" /></td>
+                <td class="input-value cell last" title="Napredak"><input title="Napredak" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="7" id="@(row["Oznaka"] + "-7")" class="input-data" /></td>
             </tr>
         }
     }
@@ -161,17 +161,18 @@
                 <td class="naziv left grouped">@row["Naziv"]</td>
                 <td  grupaId="@row["GrupaId"]" oznaka="@row["Oznaka"]" class="prosjek average grouped"></td>
                 <td class="split cell"></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
-                <td class="input-value cell"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
+                <td class="input-value cell" title="Trendovi"><input title="Trendovi" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="1" id="@(row["Oznaka"] + "-1")" class="input-data" /></td>
+                <td class="input-value cell" title="Ciljevi"><input title="Ciljevi" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="2" id="@(row["Oznaka"] + "-2")" class="input-data" /></td>
+                <td class="input-value cell" title="Usporedbe"><input title="Usporedbe" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="3" id="@(row["Oznaka"] + "-3")" class="input-data" /></td>
+                <td class="input-value cell last" title="Uzroci"><input title="Uzroci" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="4" id="@(row["Oznaka"] + "-4")" class="input-data" /></td>
                 <td class="split cell"></td>
-                <td class="input-value cell last"><input type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
+                <td class="input-value cell last" title="Sadržaj"><input title="Sadržaj" type="text" pitanjeID="@row["Id"]" oznaka="@row["Oznaka"]" atribut="5" id="@(row["Oznaka"] + "-5")" class="input-data" /></td>
             </tr>    
         }
     }
 </table>
     <div class="action-bar">
-        <input type="submit" class="save button" value="Spremi"/>
+        <input type="submit" class="save button" value="Ocijeni
+        "/>
     </div>
 </div>

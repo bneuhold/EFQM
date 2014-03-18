@@ -25,6 +25,11 @@
 
         function drawChart() {
 
+            var gWidth = $("#visualization").width() *0.8;
+            gWidth = (gWidth < 1024) ? 1014 : gWidth;
+            var gHeight = gWidth * 0.75;
+            gHeight = (gHeight > 900) ? 900 : gHeight;
+
             // Create and populate the data table.
             var data = google.visualization.arrayToDataTable([
                 ['Ukupni rezultat', 'Najbolja praksa', 'Prosjek', 'Vaš upitnik'],
@@ -39,17 +44,34 @@
                 ['Ključni rezultati izvršenja', @Model.BP[8], @Model.AV[8], @Model.QR[8]]
               ]);
 
+            var view = new google.visualization.DataView(data);
+                view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2,
+                       { calc: "stringify",
+                         sourceColumn: 2,
+                         type: "string",
+                         role: "annotation" },
+                         3,
+                         { calc: "stringify",
+                         sourceColumn: 3,
+                         type: "string",
+                         role: "annotation" }]);
+
             // Create and draw the visualization.
             new google.visualization.ColumnChart(document.getElementById('visualization')).
-              draw(data,
+              draw(view,
                    { title: "@Model.Naziv",
-                       width: 900, height: 700
+                       width: gWidth, height: gHeight
                    }
               );
 
         }
     </script>
 }
-<h2>Rezultat upitnika i usporedba</h2>
+<h2>Vaša poslovna izvrsnost</h2>
 
 <div id="visualization"></div>
