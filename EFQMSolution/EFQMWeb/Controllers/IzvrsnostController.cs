@@ -44,8 +44,8 @@ namespace EFQMWeb.Controllers
 
         public ActionResult Result(int? id, string upitnikIDs)
         {
-            UpitnikGraf result = new UpitnikGraf();
-            using (IDataReader reader = Database.GetRezultat(id.Value, MySession.CurrentUser.Type))
+            UpitnikGraf result = Izracun.Result(Database, id, null, MySession.CurrentUser.Type);
+            /*using (IDataReader reader = Database.GetRezultat(id.Value, MySession.CurrentUser.Type))
             {
                 while (reader.Read())
                 {
@@ -58,20 +58,23 @@ namespace EFQMWeb.Controllers
                 while (reader.Read())
                 {
                     result.BP[i++] = (int)Math.Round((decimal)reader["Vrijednost"],0);
+                    result.SumBP += result.BP[i - 1];
                 }
                 reader.NextResult();
                 i = 0;
                 while (reader.Read())
                 {
                     result.AV[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
+                    result.SumAV += result.AV[i - 1];
                 }
                 reader.NextResult();
                 i = 0;
                 while (reader.Read())
                 {
                     result.QR[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
+                    result.SumQR += result.QR[i - 1];
                 }
-            }
+            }*/
             return View(result);
         }
 

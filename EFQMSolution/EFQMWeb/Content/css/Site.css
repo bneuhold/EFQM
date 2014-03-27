@@ -466,6 +466,9 @@ table.upitnik.table-editor{}
 #SeminarRegistrationDetailsModal .form-box.company .cell.label-cell { width: 150px;font-weight:bold }
 #SeminarRegistrationDetailsModal .form-box.company .cell.value-cell { width: 210px;}
 
+.upitnik-label{width:100px;padding-right:10px;font-weight:bold;display:inline-block;}
+.big-input{width:300px !important;}
+.copy-link-input{width: 500px !important;}
 
 
 

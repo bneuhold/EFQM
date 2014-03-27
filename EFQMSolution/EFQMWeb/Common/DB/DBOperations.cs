@@ -253,12 +253,17 @@ namespace EFQMWeb.Common.DB
             };
         }
 
-        public IDataReader GetRezultat(int UpitnikId, string Tip)
+        public IDataReader GetRezultat(int? UpitnikId, string uuid, string Tip)
         {
 
             using (DbCommand command = GetCommand("tblHuogResult_Rezultat"))
             {
                 SetParameterValue(command, "@UpitnikId", UpitnikId);
+                if (!string.IsNullOrEmpty(uuid))
+                {
+                    SetParameterValue(command, "@Uuid", Guid.Parse(uuid));
+                }
+                
                 SetParameterValue(command, "@Tip", Tip);
                 return ExecuteReader(command);
             }

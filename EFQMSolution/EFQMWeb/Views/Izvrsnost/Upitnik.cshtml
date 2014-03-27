@@ -35,6 +35,12 @@
             if ($("#UpitnikId").val() != "") {
                 result.UpitnikId = $("#UpitnikId").val();
             }
+            if ($("#Naziv").val() != "") {
+                result.Naziv = $("#Naziv").val();
+            }
+            if ($("#Opis").val() != "") {
+                result.Opis = $("#Opis").val();
+            }
             $(".input-value .input-data").each(function () {
                 var val = 0;
                 if ($(this).val() != "") {
@@ -78,6 +84,13 @@
 
 <h2>Upitnik o poslovnoj izvrsnosti</h2>
 <input type="hidden" id="UpitnikId" name="UpitnikId" value="@(Model.UpitnikId.HasValue? Model.UpitnikId.ToString() : "")"/>
+
+<div>
+    <label class="upitnik-label">Vaš naziv: </label><input type="text" id="Naziv" class="big-input"/>
+</div>
+<div>
+    <label class="upitnik-label">Vaš opis: </label><input type="text" id="Opis" class="big-input"/>
+</div>
 
 <div class="upitnik-wrapper"> 
     <table class="upitnik table-editor extended">

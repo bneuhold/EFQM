@@ -18,6 +18,18 @@
 
 @section Scripts{
 
+<script type="text/javascript">
+    $(function () {
+        $(".copy-link").click(function (e) {
+            e.preventDefault();
+            $(".copy-link-input").hide();
+            $(this).next().show();
+        });
+
+    });
+
+</script>
+
 }
 
 <h2>Poslovna izvrsnost</h2>
@@ -33,6 +45,7 @@
                 <th>Naziv</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +56,13 @@
                 <td class="name">@row["Naziv"].ToString()</td>
                 <td><a href="@Url.Action("Upitnik", "Izvrsnost", new { id = row["Id"]})">Promijeni upitnik</a></td>
                 <td><a href="@Url.Action("Result", "Izvrsnost", new { id = row["Id"]})">Rezultat upitnika</a></td>
+                <td>
+                    @if (!string.IsNullOrEmpty(row["Uuid"].ToString()))
+                    {
+                    <a class="copy-link" href="@Url.Action("IzvrsnostRezultat", "Public", new { qpid = row["Uuid"].ToString(), utype = MySession.CurrentUser.Type }, Request.Url.Scheme)">Kopiraj link</a>
+                        <input value="@Url.Action("IzvrsnostRezultat", "Public", new { qpid = row["Uuid"].ToString(), utype = MySession.CurrentUser.Type }, Request.Url.Scheme)" class="copy-link-input initial-hidden" />
+                    }
+                </td>
             </tr>
         }
         </tbody>

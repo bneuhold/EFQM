@@ -902,7 +902,7 @@ API.Design.upitnik = {
             $(".average", row).html(avg);
         }).forceInt100();
 
-        
+
     },
     load: function (id) {
         API.Ajax.PostJson(API.Communication.url + "izvrsnost/load", { UpitnikId: id }, {}, null, API.Design.upitnik.loadSuccess, API.Design.upitnik.loadError);
@@ -912,10 +912,13 @@ API.Design.upitnik = {
             var d = this;
             $("#" + d.O + "-" + d.A).val(d.V);
         });
-        
+
         $("td.average").each(function () {
             $("input.input-data:first", $(this).parent()).trigger("blur");
         });
+
+        $("#Naziv").val(data.Naziv);
+        $("#Opis").val(data.Opis);
     },
     loadError: function () {
 

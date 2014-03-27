@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using EFQMWeb.Models;
+using System.Data;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using EFQMWeb.Common.DB;
 
 namespace EFQMWeb.Common
 {
@@ -70,6 +73,42 @@ namespace EFQMWeb.Common
 
             return new UpitnikRezultat() {Grupe = result, Ocjena = s };
 
+        }
+
+        public static UpitnikGraf Result(DBOperations Database, int? id, string uuid, string userType)
+        {
+            UpitnikGraf result = new UpitnikGraf();
+            using (IDataReader reader = Database.GetRezultat(id, uuid, userType))
+            {
+                while (reader.Read())
+                {
+                    result.UpitnikId = (int)reader["Id"];
+                    result.Datum = (DateTime)reader["Datum"];
+                    result.Naziv = reader["Naziv"].ToString();
+                }
+                reader.NextResult();
+                int i = 0;
+                while (reader.Read())
+                {
+                    result.BP[i++] = (int)Math.Round((decimal)reader["Vrijednost"],0);
+                    result.SumBP += result.BP[i - 1];
+                }
+                reader.NextResult();
+                i = 0;
+                while (reader.Read())
+                {
+                    result.AV[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
+                    result.SumAV += result.AV[i - 1];
+                }
+                reader.NextResult();
+                i = 0;
+                while (reader.Read())
+                {
+                    result.QR[i++] = (int)Math.Round((decimal)reader["Vrijednost"], 0);
+                    result.SumQR += result.QR[i - 1];
+                }
+            }
+            return result;
         }
     }
 }

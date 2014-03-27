@@ -89,6 +89,10 @@ namespace EFQMWeb.Models
         public int[] AV { get; set; }
         public int[] QR { get; set; }
 
+        public int SumBP { get; set; }
+        public int SumAV { get; set; }
+        public int SumQR { get; set; }
+
         public UpitnikGraf()
         {
             BP = new int[9];
