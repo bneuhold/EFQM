@@ -469,6 +469,61 @@ table.upitnik.table-editor{}
 .upitnik-label{width:100px;padding-right:10px;font-weight:bold;display:inline-block;}
 .big-input{width:300px !important;}
 .copy-link-input{width: 500px !important;}
+.drop-wrapper{position: relative;cursor: pointer;}
+.drop-wrapper .drop-content{position:absolute;width:500px;font-weight:normal;font-size:0.8em;background: #efefef; border: solid 1px;text-align:left;padding:10px;box-shadow: 0 0 7px black;border-radius: 20px;top:30px;left:50%;margin-left:-260px;}
+.drop-wrapper .drop-content .strong{display:inline-block;width:120px;}
+.drop-wrapper .drop-content .line{padding:3px 0px;border-top:solid 1px #ccc;}
+.drop-wrapper .drop-content ,.drop-wrapper .drop-content .arrow:after
+{
+    background: #efefef !important;
+    border: 2px solid #333 !important;
+}
+
+/*.ui-tooltip, .arrow:after {
+    background: black !important;
+    border: 2px solid white !important;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white !important;
+    border-radius: 20px;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+  }*/
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    tranform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -20px;
+    top: auto;
+  }
 
 
 

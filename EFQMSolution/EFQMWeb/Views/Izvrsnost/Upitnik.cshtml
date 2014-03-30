@@ -31,7 +31,7 @@
         }
 
         $(".save.button").click(function (e) {
-            var result = { Vrijednosti: [], Prosjek:[] };
+            var result = { Vrijednosti: [], Prosjek: [] };
             if ($("#UpitnikId").val() != "") {
                 result.UpitnikId = $("#UpitnikId").val();
             }
@@ -50,16 +50,17 @@
             });
 
             $(".prosjek").each(function () {
-                result.Prosjek.push({ O: $(this).attr("oznaka"),  G: $(this).attr("GrupaId"),  V: $(this).html() });
+                result.Prosjek.push({ O: $(this).attr("oznaka"), G: $(this).attr("GrupaId"), V: $(this).html() });
             });
 
             var success = function (ctx, data) {
                 $("#UpitnikId").val(data.UpitnikId);
-                var f = function () { 
-                window.location = API.Communication.url + "izvrsnost/result/" + data.UpitnikId;  };
+                var f = function () {
+                    window.location = API.Communication.url + "izvrsnost/result/" + data.UpitnikId;
+                };
                 if (isInsert) {
                     isInsert = false;
-                    API.Design.fadeMessage.open("Novi upitnik je uspješno spremljen. Izračunavam rezultate...",2, f);
+                    API.Design.fadeMessage.open("Novi upitnik je uspješno spremljen. Izračunavam rezultate...", 2, f);
                 } else {
                     API.Design.fadeMessage.open("Uspješno ste promijenili postojeći upitnik. Izračunavam rezultate...", 2, f);
                 }
@@ -75,6 +76,16 @@
             };
 
             API.Ajax.PostJson(API.Communication.url + "izvrsnost/save", { json: JSON.stringify(result) }, {}, null, success, error, complete);
+        });
+
+        $(".drop-wrapper").click(function (e) {
+            var content = $(this).find(".drop-content");
+            if (content.is(":visible")) {
+                $(this).find(".drop-content").hide();
+            } else {
+                $(this).find(".drop-content").show();
+            }
+            
         });
 
     });
@@ -99,7 +110,7 @@
         <td class="left">Podkriterij</td>
         <td></td>
         <td class="split cell"></td>
-        <td colspan="2" class="">Pristup</td>
+        <td colspan="2" class="" title="">Pristup</td>
         <td class="split cell"></td>
         <td colspan="2" class="">Uvođenje</td>
         <td class="split cell"></td>
@@ -109,15 +120,93 @@
         <td colspan="2"></td>
         <td>Prosjek</td>
         <td></td>
-        <td>Pouzdan</td>
-        <td>Integriran</td>
+        <td class="tooltip" title="pristup podržava zdravu logiku. proces posjeduje definirane procese. pristup se fokusira na potrebe interesnih sudionika">
+        <div class="drop-wrapper">Pouzdan
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">pristup podržava zdravu logiku.<br />proces posjeduje definirane procese.<br />pristup se fokusira na potrebe interesnih sudionika</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        </td>
+        <td class="tooltip" title="">
+        <div class="drop-wrapper">Integriran
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">pristup podržava poslovnu politiku i strategiju.<br />pristup je primjereno povezan s ostalim pristupima</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        </td>
         <td></td>
-        <td>Implementirano</td>
-        <td>Sustavno</td>
+        <td class="tooltip" title="">
+            <div class="drop-wrapper">Implementirano
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">pristup je implementiran</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                <div class="line"><span class="strong">25% (15-35)</span>Implementiran je u 1/4 značajnih područja</div>
+                <div class="line"><span class="strong">50% (40-60)</span>Implementiran je u 1/2 značajnih područja</div>
+                <div class="line"><span class="strong">75% (65-85)</span>Implementiran je u 3/4 značajnih područja</div>
+                <div class="line"><span class="strong">100% (90-100)</span>Implementiran je u svim značajnim područjima</div>
+            </div>
+        </div>
+        </td>
+        <td class="tooltip" title="">
+        <div class="drop-wrapper">Sustavno
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">pristup je implementiran prema strukturiranom načinu i prema prethodno planiranoj i uspješno primjenjenoj metodi</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        
+        </td>
         <td></td>
-        <td>Mjerenje</td>
-        <td>Učenje</td>
-        <td>Napredak</td>
+        <td class="tooltip" title="">
+        <div class="drop-wrapper">Mjerenje
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">redovito mjerenje efektivnosti pristupa i njegove primjene</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        </td>
+        <td class="tooltip" title="">
+        <div class="drop-wrapper">Učenje
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">se koristi za:<br />kako bi se identificirala najbolja praksa i prilike za poboljšanjem</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        </td>
+        <td class="tooltip" title="">
+        <div class="drop-wrapper">Napredak
+            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+                <p class="explanation">Izlazne informacije od mjerenja i učenja se koriste i analiziraju za:<br />identificiranje, postavljanje prioriteta i primjenu poboljšanja</p>
+                <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
+                    <div class="line"><span class="strong">50% (40-60)</span>Postoji dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">75% (65-85)</span>Postoji jasan dokaz o rezultatu ili važnoj priči</div>
+                    <div class="line"><span class="strong">100% (90-100)</span>Postoji razumljiv dokaz o rezultatu ili važnoj priči</div>
+            </div>
+        </div>
+        </td>
         <td></td>
     </tr>
     @foreach (DataRow row in Model.Pitanja.Rows)

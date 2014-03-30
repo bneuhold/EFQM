@@ -75,6 +75,8 @@ namespace EFQMWeb.Controllers
                     result.SumQR += result.QR[i - 1];
                 }
             }*/
+
+            ViewBag.ContactLink = MyConfig.GetSetting("ContactLink");
             return View(result);
         }
 
