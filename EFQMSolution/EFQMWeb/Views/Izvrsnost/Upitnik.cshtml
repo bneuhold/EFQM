@@ -78,7 +78,7 @@
             API.Ajax.PostJson(API.Communication.url + "izvrsnost/save", { json: JSON.stringify(result) }, {}, null, success, error, complete);
         });
 
-        $(".drop-wrapper").click(function (e) {
+        /*$(".drop-wrapper").click(function (e) {
             var content = $(this).find(".drop-content");
             if (content.is(":visible")) {
                 $(this).find(".drop-content").hide();
@@ -86,7 +86,7 @@
                 $(this).find(".drop-content").show();
             }
             
-        });
+        });*/
 
     });
 </script>
@@ -122,7 +122,7 @@
         <td></td>
         <td class="tooltip" title="pristup podržava zdravu logiku. proces posjeduje definirane procese. pristup se fokusira na potrebe interesnih sudionika">
         <div class="drop-wrapper">Pouzdan
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">pristup podržava zdravu logiku.<br />proces posjeduje definirane procese.<br />pristup se fokusira na potrebe interesnih sudionika</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
@@ -134,7 +134,7 @@
         </td>
         <td class="tooltip" title="">
         <div class="drop-wrapper">Integriran
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">pristup podržava poslovnu politiku i strategiju.<br />pristup je primjereno povezan s ostalim pristupima</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
@@ -147,7 +147,7 @@
         <td></td>
         <td class="tooltip" title="">
             <div class="drop-wrapper">Implementirano
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">pristup je implementiran</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                 <div class="line"><span class="strong">25% (15-35)</span>Implementiran je u 1/4 značajnih područja</div>
@@ -159,7 +159,7 @@
         </td>
         <td class="tooltip" title="">
         <div class="drop-wrapper">Sustavno
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">pristup je implementiran prema strukturiranom načinu i prema prethodno planiranoj i uspješno primjenjenoj metodi</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
@@ -173,7 +173,7 @@
         <td></td>
         <td class="tooltip" title="">
         <div class="drop-wrapper">Mjerenje
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">redovito mjerenje efektivnosti pristupa i njegove primjene</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
@@ -185,7 +185,7 @@
         </td>
         <td class="tooltip" title="">
         <div class="drop-wrapper">Učenje
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">se koristi za:<br />kako bi se identificirala najbolja praksa i prilike za poboljšanjem</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>
@@ -197,7 +197,7 @@
         </td>
         <td class="tooltip" title="">
         <div class="drop-wrapper">Napredak
-            <div class="drop-content initial-hidden"><div class="arrow top"></div>
+            <div class="drop-content"><div class="arrow top"></div>
                 <p class="explanation">Izlazne informacije od mjerenja i učenja se koriste i analiziraju za:<br />identificiranje, postavljanje prioriteta i primjenu poboljšanja</p>
                 <div class="line"><span class="strong">0% (0-10)</span>Ne postoji dokaz o rezultatu ili važnoj priči</div>
                     <div class="line"><span class="strong">25% (15-35)</span>Postoji mali dokaz rezultat ili važnoj priči</div>

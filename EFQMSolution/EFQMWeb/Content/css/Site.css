@@ -475,9 +475,11 @@ table.upitnik.table-editor{}
 .drop-wrapper .drop-content .line{padding:3px 0px;border-top:solid 1px #ccc;}
 .drop-wrapper .drop-content ,.drop-wrapper .drop-content .arrow:after
 {
+    display:none;
     background: #efefef !important;
     border: 2px solid #333 !important;
 }
+.drop-wrapper:hover .drop-content ,.drop-wrapper:hover .drop-content .arrow:after{display:block;}
 
 /*.ui-tooltip, .arrow:after {
     background: black !important;
